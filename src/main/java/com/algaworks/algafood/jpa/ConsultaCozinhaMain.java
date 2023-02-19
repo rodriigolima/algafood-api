@@ -17,13 +17,13 @@ public class ConsultaCozinhaMain {
         
         CozinhaRepository cozinhas = applicationContext.getBean(CozinhaRepository.class);
             
-        List<Cozinha> todasCozinhas = cozinhas.todas();
+        List<Cozinha> todasCozinhas = cozinhas.listar();
         
         for(Cozinha cozinha: todasCozinhas){
             System.out.println(cozinha.getNome());
         }
     
-        Cozinha cozinha = cozinhas.porId(1L);
+        Cozinha cozinha = cozinhas.buscar(1L);
 
         System.out.println(cozinha.getNome());
     }
