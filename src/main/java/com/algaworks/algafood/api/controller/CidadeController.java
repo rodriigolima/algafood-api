@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/cidades")
@@ -24,13 +25,12 @@ public class CidadeController {
     private CadastroCidadeService cadastroCidadeService;
     
     @GetMapping
-    public List<Cidade> listar() { return cidadeRepository.listar(); }
+    public List<Cidade> listar() { return cidadeRepository.findAll(); }
 
     @GetMapping("/{cidadeId}")
     public ResponseEntity<Cidade> buscar(@PathVariable Long cidadeId){
-        Cidade cidade = cidadeRepository.buscar(cidadeId);
-        if (cidade != null) return ResponseEntity.ok(cidade);
-        return ResponseEntity.notFound().build();
+        Optional<Cidade> cidade = cidadeRepository.findById(cidadeId);
+        return cidade.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
     
     @PostMapping
@@ -46,14 +46,14 @@ public class CidadeController {
     
     @PutMapping("/{cidadeId}")
     public ResponseEntity<Cidade> atualizar(@PathVariable Long cidadeId, @RequestBody Cidade cidade){
-        Cidade cidadeAtual =  cidadeRepository.buscar(cidadeId);
+        Optional<Cidade> cidadeAtual =  cidadeRepository.findById(cidadeId);
         
-        if (cidadeAtual != null) {
-            BeanUtils.copyProperties(cidade, cidadeAtual, "id");
+        if (cidadeAtual.isPresent()) {
+            BeanUtils.copyProperties(cidade, cidadeAtual.get(), "id");
             
-            cidadeAtual = cadastroCidadeService.salvar(cidadeAtual);
+            Cidade cidadeSalva = cadastroCidadeService.salvar(cidadeAtual.get());
             
-            return ResponseEntity.ok(cidadeAtual);
+            return ResponseEntity.ok(cidadeSalva);
         } 
         return ResponseEntity.notFound().build();
     }
