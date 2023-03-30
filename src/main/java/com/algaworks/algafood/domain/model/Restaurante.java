@@ -7,6 +7,7 @@ import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -23,12 +24,13 @@ public class Restaurante {
     private Long id;
     
     @Column(nullable = false)
+    @NotNull
     private String nome;
     
     @Column(name = "taxa_frete", nullable = false)
     private BigDecimal taxaFrete;
     
-    @JsonIgnore
+    //@JsonIgnore
     @ManyToOne //(fetch = FetchType.LAZY)
     @JoinColumn(name = "cozinha_id", nullable = false)
     private Cozinha cozinha;
