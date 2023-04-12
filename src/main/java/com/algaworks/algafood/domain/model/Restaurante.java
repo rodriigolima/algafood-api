@@ -5,14 +5,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
+import jakarta.validation.groups.ConvertGroup;
+import jakarta.validation.groups.Default;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 
-import javax.validation.groups.ConvertGroup;
-import javax.validation.groups.Default;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -29,16 +29,13 @@ public class Restaurante {
     private Long id;
     
     @Column(nullable = false)
-    //@NotNull
-    //@NotEmpty
     @NotBlank
     private String nome;
     
     @Column(name = "taxa_frete", nullable = false)
-    //@DecimalMin("0")
     @PositiveOrZero
     private BigDecimal taxaFrete;
-    
+
     //@JsonIgnore
     @Valid
     @ConvertGroup(from = Default.class, to = Groups.CozinhaId.class)
