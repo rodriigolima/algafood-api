@@ -41,6 +41,7 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
+			<version>8.0.31</version>
 			<scope>runtime</scope>
 		</dependency>
 
@@ -73,7 +74,16 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>3.0.3</version>
+				<configuration>
+					<skip>true</skip>
+				</configuration>
 			</plugin>
+			
+			<plugin>
+				<artifactId>maven-failsafe-plugin</artifactId>
+			</plugin>
+			
 		</plugins>
 	</build>
 
