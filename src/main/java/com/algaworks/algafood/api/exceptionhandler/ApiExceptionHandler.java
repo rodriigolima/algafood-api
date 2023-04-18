@@ -1,5 +1,6 @@
 package com.algaworks.algafood.api.exceptionhandler;
 
+import com.algaworks.algafood.core.validation.ValidacaoException;
 import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.NegocioException;
@@ -16,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import com.fasterxml.jackson.databind.JsonMappingException.Reference;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -39,34 +41,13 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     private MessageSource messageSource;
 
     @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(
-            MethodArgumentNotValidException ex,
-            HttpHeaders headers, HttpStatusCode status, WebRequest request) {
-
-        ProblemType problemType = ProblemType.DADOS_INVALIDOS;
-        String detail = "Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente.";
-
-        BindingResult bindingResult = ex.getBindingResult();
-
-        List<Problem.Field> problemFields = bindingResult.getFieldErrors().stream()
-                .map(fieldError -> { 
-                    String message = messageSource.getMessage(fieldError, LocaleContextHolder.getLocale());
-                    
-                    return Problem.Field.builder()
-                        .name(fieldError.getField())
-                        .userMessage(message)
-                        .build();
-                })
-                .collect(Collectors.toList());
-
-        Problem problem = createProblemBuilder(status, problemType, detail)
-                .userMessage(detail)
-                .fields(problemFields)
-                .build();
-
-        return handleExceptionInternal(ex, problem, headers, status, request);
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
+                                                                  HttpHeaders headers, HttpStatusCode status,
+                                                                  WebRequest request) {
+        return handleValidationInternal(ex, ex.getBindingResult(), headers, status, request);
     }
-    
+
+
     @Override
     protected ResponseEntity<Object> handleNoHandlerFoundException(
             NoHandlerFoundException ex,
@@ -96,6 +77,36 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return super.handleTypeMismatch(ex, headers, status, request);
     }
 
+    private ResponseEntity<Object> handleValidationInternal(Exception ex, BindingResult bindingResult, HttpHeaders headers,
+                                                            HttpStatusCode status, WebRequest request) {
+
+        ProblemType problemType = ProblemType.DADOS_INVALIDOS;
+        String detail = "Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente.";
+
+        List<Problem.Field> problemObjects = bindingResult.getAllErrors().stream()
+                .map(fieldError -> {
+                    String message = messageSource.getMessage(fieldError, LocaleContextHolder.getLocale());
+
+                    String name = fieldError.getObjectName();
+
+                    if (fieldError instanceof FieldError) {
+                        name = ((FieldError) fieldError).getField();
+                    }
+
+                    return Problem.Field.builder()
+                            .name(name)
+                            .userMessage(message)
+                            .build();
+                })
+                .collect(Collectors.toList());
+
+        Problem problem = createProblemBuilder(status, problemType, detail)
+                .userMessage(detail)
+                .fields(problemObjects)
+                .build();
+
+        return handleExceptionInternal(ex, problem, headers, status, request);
+    }
     
 
     private ResponseEntity<Object> handleMethodArgumentTypeMismatch(
@@ -177,6 +188,12 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 .build();
 
         return handleExceptionInternal(ex, problem, headers, status, request);
+    }
+
+    @ExceptionHandler({ ValidacaoException.class })
+    public ResponseEntity<Object> handleValidacaoException(ValidacaoException ex, WebRequest request) {
+        return handleValidationInternal(ex, ex.getBindingResult(), new HttpHeaders(),
+                HttpStatus.BAD_REQUEST, request);
     }
 
     @ExceptionHandler(EntidadeNaoEncontradaException.class)
