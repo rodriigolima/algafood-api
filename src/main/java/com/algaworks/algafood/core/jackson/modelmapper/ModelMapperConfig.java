@@ -1,4 +1,4 @@
-package com.algaworks.algafood.core.modelmapper;
+package com.algaworks.algafood.core.jackson.modelmapper;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;

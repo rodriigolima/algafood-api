@@ -1,4 +1,4 @@
-package com.algaworks.algafood.core.validation;
+package com.algaworks.algafood.core.jackson.validation;
 
 public interface Groups {
     

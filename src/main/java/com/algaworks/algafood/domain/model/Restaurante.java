@@ -22,19 +22,12 @@ public class Restaurante {
     private Long id;
     
     @Column(nullable = false)
-//    @NotBlank
     private String nome;
     
     @Column(name = "taxa_frete", nullable = false)
-//    @NotNull
-//    @PositiveOrZero
-//    @TaxaFrete
     private BigDecimal taxaFrete;
 
-//    @Valid
-//    @ConvertGroup(from = Default.class, to = Groups.CozinhaId.class)
     @ManyToOne //(fetch = FetchType.LAZY)
-//    @NotNull
     @JoinColumn(name = "cozinha_id", nullable = false)
     private Cozinha cozinha;
     
