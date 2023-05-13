@@ -4,8 +4,6 @@ import com.algaworks.algafood.api.assembler.GrupoInputDisassembler;
 import com.algaworks.algafood.api.assembler.GrupoModelAssembler;
 import com.algaworks.algafood.api.model.GrupoDTO;
 import com.algaworks.algafood.api.model.input.GrupoInput;
-import com.algaworks.algafood.domain.exception.GrupoNaoEncontradoException;
-import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.model.Grupo;
 import com.algaworks.algafood.domain.repository.GrupoRepository;
 import com.algaworks.algafood.domain.service.CadastroGrupoService;
@@ -38,7 +36,7 @@ public class GrupoController {
     @GetMapping("/{grupoId}")
     public GrupoDTO buscar(@PathVariable Long grupoId){
         
-        Grupo grupo = cadastroGrupo.buscarOrFalhar(grupoId);
+        Grupo grupo = cadastroGrupo.buscarOuFalhar(grupoId);
         
         return grupoModelAssembler.toModel(grupo);
     }
@@ -55,7 +53,7 @@ public class GrupoController {
     @PutMapping("/{grupoId}")
     public GrupoDTO atualizar(@PathVariable Long grupoId, @RequestBody @Valid GrupoInput grupoInput){
         
-        Grupo grupoAtual =  cadastroGrupo.buscarOrFalhar(grupoId);
+        Grupo grupoAtual =  cadastroGrupo.buscarOuFalhar(grupoId);
             
         grupoInputDisassembler.copyToDomainObject(grupoInput, grupoAtual);
             
