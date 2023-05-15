@@ -8,9 +8,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Data
@@ -83,12 +81,20 @@ public class Restaurante {
         getFormasPagamento().add(formaPagamento);
     }
 
-    public boolean removerResponsavel(Usuario usuario) {
-        return getResponsaveis().remove(usuario);
+    public void removerResponsavel(Usuario usuario) {
+        getResponsaveis().remove(usuario);
     }
 
-    public boolean adicionarResponsavel(Usuario usuario) {
-        return getResponsaveis().add(usuario);
+    public void adicionarResponsavel(Usuario usuario) {
+        getResponsaveis().add(usuario);
+    }
+    
+    public boolean aceitarFormaPagamento(FormaPagamento formaPagamento) {
+        return getFormasPagamento().contains(formaPagamento);
+    }
+    
+    public boolean naoAceitaFormaPagamento(FormaPagamento formaPagamento){
+        return !aceitarFormaPagamento(formaPagamento);
     }
     
 }
