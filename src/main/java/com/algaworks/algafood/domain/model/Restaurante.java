@@ -57,6 +57,12 @@ public class Restaurante {
     @OneToMany(mappedBy = "restaurante")
     private Set<Produto> produtos = new HashSet<>();
     
+    @ManyToMany
+    @JoinTable(name = "restaurante_usuario_responsavel",
+            joinColumns = @JoinColumn(name = "restaurante_id"),
+            inverseJoinColumns = @JoinColumn(name = "usuario_id"))
+    private Set<Usuario> responsaveis = new HashSet<>();
+
     public void ativar() {
         setAtivo(true);
     }
@@ -75,6 +81,14 @@ public class Restaurante {
 
     public void adicionarFormaPagamento(FormaPagamento formaPagamento) {
         getFormasPagamento().add(formaPagamento);
+    }
+
+    public boolean removerResponsavel(Usuario usuario) {
+        return getResponsaveis().remove(usuario);
+    }
+
+    public boolean adicionarResponsavel(Usuario usuario) {
+        return getResponsaveis().add(usuario);
     }
     
 }

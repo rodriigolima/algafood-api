@@ -24,6 +24,9 @@ public class CadastroRestauranteService {
     
     @Autowired
     private CadastroProdutoService cadastroProduto;
+    
+    @Autowired
+    private CadastroUsuarioService cadastroUsuario;
 
     @Transactional
     public Restaurante salvar(Restaurante restaurante) {
@@ -66,6 +69,23 @@ public class CadastroRestauranteService {
         FormaPagamento formaPagamento = cadastroFormaPagamento.buscarOuFalhar(formaPagamentoId);
         
         restaurante.removerFormaPagamento(formaPagamento);
+    }
+
+    @Transactional
+    public void associarResponsavel(Long restauranteId, Long usuarioId) {
+        Restaurante restaurante = buscarOuFalhar(restauranteId);
+        Usuario usuario = cadastroUsuario.buscarOuFalhar(usuarioId);
+
+        restaurante.adicionarResponsavel(usuario);
+    }
+
+
+    @Transactional
+    public void desassociarResponsavel(Long restauranteId, Long usuarioId) {
+        Restaurante restaurante = buscarOuFalhar(restauranteId);
+        Usuario usuario = cadastroUsuario.buscarOuFalhar(usuarioId);
+
+        restaurante.removerResponsavel(usuario);
     }
     
     @Transactional
