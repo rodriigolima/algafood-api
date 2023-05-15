@@ -4,14 +4,12 @@ import com.algaworks.algafood.api.assembler.CidadeInputDisassembler;
 import com.algaworks.algafood.api.assembler.CidadeModelAssembler;
 import com.algaworks.algafood.api.model.CidadeDTO;
 import com.algaworks.algafood.api.model.input.CidadeInput;
-import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.EstadoNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.model.Cidade;
 import com.algaworks.algafood.domain.repository.CidadeRepository;
 import com.algaworks.algafood.domain.service.CadastroCidadeService;
 import jakarta.validation.Valid;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -40,7 +38,7 @@ public class CidadeController {
     @GetMapping("/{cidadeId}")
     public CidadeDTO buscar(@PathVariable Long cidadeId){
         
-        Cidade cidade = cadastroCidade.buscarOrFalhar(cidadeId);
+        Cidade cidade = cadastroCidade.buscarOuFalhar(cidadeId);
         
         return cidadeModelAssembler.toModel(cidade);
     }
@@ -60,7 +58,7 @@ public class CidadeController {
     @PutMapping("/{cidadeId}")
     public CidadeDTO atualizar(@PathVariable Long cidadeId, @RequestBody @Valid CidadeInput cidadeInput){
         try {
-            Cidade cidadeAtual =  cadastroCidade.buscarOrFalhar(cidadeId);
+            Cidade cidadeAtual =  cadastroCidade.buscarOuFalhar(cidadeId);
             
             cidadeInputDisassembler.copyToDomainObject(cidadeInput, cidadeAtual);
             

@@ -1,6 +1,6 @@
 package com.algaworks.algafood.api.model.input;
 
-import com.algaworks.algafood.core.jackson.validation.TaxaFrete;
+import com.algaworks.algafood.core.validation.TaxaFrete;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

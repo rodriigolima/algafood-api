@@ -36,7 +36,7 @@ public class CadastroRestauranteService {
         Long cidadeId = restaurante.getEndereco().getCidade().getId();
         
         Cozinha cozinha = cadastroCozinha.buscarOuFalhar(cozinhaId);
-        Cidade cidade = cadastroCidade.buscarOrFalhar(cidadeId);
+        Cidade cidade = cadastroCidade.buscarOuFalhar(cidadeId);
         
         restaurante.setCozinha(cozinha);
         restaurante.getEndereco().setCidade(cidade);

@@ -1,4 +1,4 @@
-package com.algaworks.algafood.core.jackson.validation;
+package com.algaworks.algafood.core.validation;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.OverridesAttribute;
