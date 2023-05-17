@@ -10,7 +10,7 @@ import java.util.List;
 @Setter@Getter
 public class PedidoDTO {
 
-    private Long id;
+    private String codigo;
     private BigDecimal subtotal;
     private BigDecimal taxaFrete;
     private BigDecimal valorTotal;
