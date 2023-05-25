@@ -8,7 +8,7 @@ public class RestauranteNaoEncontradaException extends EntidadeNaoEncontradaExce
         super( mensagem);
     }
 
-    public RestauranteNaoEncontradaException(Long cozinhaId) {
-        this(String.format(MSG_RESTAURANTE_NAO_ENCONTRADA, cozinhaId));
+    public RestauranteNaoEncontradaException(Long restauranteId) {
+        this(String.format(MSG_RESTAURANTE_NAO_ENCONTRADA, restauranteId));
     }
 }

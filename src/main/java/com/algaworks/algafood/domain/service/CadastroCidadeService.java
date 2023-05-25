@@ -28,7 +28,7 @@ public class CadastroCidadeService {
     private CadastroEstadoService cadastroEstado;
 
     @Transactional
-    public Cidade    salvar(Cidade cidade) {
+    public Cidade salvar(Cidade cidade) {
         Long estadoId = cidade.getEstado().getId();
         Estado estado = cadastroEstado.buscarOrFalhar(estadoId);
         cidade.setEstado(estado);
