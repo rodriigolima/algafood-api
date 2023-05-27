@@ -11,11 +11,12 @@ import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/v1/cozinhas")
@@ -36,8 +37,15 @@ public class CozinhaController {
     protected CozinhaModelAssembler cozinhaModelAssembler;
     
     @GetMapping
-    public List<CozinhaDTO> listar(Pageable pageable) { 
-        return cozinhaModelAssembler.toCollectionModel(cozinhaRepository.findAll(pageable).getContent()); 
+    public Page<CozinhaDTO> listar(@PageableDefault(size = 10) Pageable pageable) { 
+        Page<Cozinha> cozinhasPage = cozinhaRepository.findAll(pageable);
+        
+        Page<CozinhaDTO> cozinhasDTOPage = new PageImpl<>(
+                cozinhaModelAssembler.toCollectionModel(cozinhasPage.getContent()), 
+                pageable,
+                cozinhasPage.getTotalElements()) ;
+        
+        return cozinhasDTOPage; 
     }
     
     
