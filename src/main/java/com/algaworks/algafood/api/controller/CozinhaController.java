@@ -8,8 +8,6 @@ import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.repository.CozinhaRepository;
 import com.algaworks.algafood.domain.service.CadastroCozinhaService;
 import jakarta.validation.Valid;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -22,8 +20,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/v1/cozinhas")
 public class CozinhaController {
     
-    private static final Logger logger = LoggerFactory.getLogger(CozinhaController.class    );
-    
+
     @Autowired
     private CozinhaRepository cozinhaRepository;
     
@@ -39,13 +36,11 @@ public class CozinhaController {
     @GetMapping
     public Page<CozinhaDTO> listar(@PageableDefault(size = 10) Pageable pageable) { 
         Page<Cozinha> cozinhasPage = cozinhaRepository.findAll(pageable);
-        
-        Page<CozinhaDTO> cozinhasDTOPage = new PageImpl<>(
+
+        return new PageImpl<>(
                 cozinhaModelAssembler.toCollectionModel(cozinhasPage.getContent()), 
                 pageable,
                 cozinhasPage.getTotalElements()) ;
-        
-        return cozinhasDTOPage; 
     }
     
     

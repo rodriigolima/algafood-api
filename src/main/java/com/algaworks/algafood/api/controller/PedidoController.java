@@ -52,13 +52,11 @@ public class PedidoController {
         
         Page<Pedido> pedidosPage = pedidoRepository.findAll(PedidoSpecs.usandoFiltro(filtro), pageable);
 
-        
-        Page<PedidoResumoDTO> pedidosDTOPage = new PageImpl<>(
+
+        return new PageImpl<>(
                 pedidoResumoModelAssembler.toCollectionModel(pedidosPage.getContent()),
                 pageable,
                 pedidosPage.getTotalElements()) ;
-        
-        return pedidosDTOPage;
     }
     
     @GetMapping("/{codigoPedido}")
@@ -73,7 +71,7 @@ public class PedidoController {
         try {
             Pedido novoPedido = pedidoInputDisassembler.toDomainObject(pedidoInput);
 
-            // TODO pegar usuário autenticado
+            // pegar usuário autenticado
             novoPedido.setCliente(new Usuario());
             novoPedido.getCliente().setId(1L);
 
