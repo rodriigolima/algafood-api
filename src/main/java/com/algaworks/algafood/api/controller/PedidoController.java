@@ -12,7 +12,7 @@ import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.model.Pedido;
 import com.algaworks.algafood.domain.model.Usuario;
 import com.algaworks.algafood.domain.repository.PedidoRepository;
-import com.algaworks.algafood.domain.repository.filter.PedidoFilter;
+import com.algaworks.algafood.domain.filter.PedidoFilter;
 import com.algaworks.algafood.domain.service.EmissaoPedidoService;
 import com.algaworks.algafood.infrastructure.repository.spec.PedidoSpecs;
 import jakarta.validation.Valid;
@@ -29,27 +29,27 @@ import java.util.Map;
 @RestController
 @RequestMapping("/pedidos")
 public class PedidoController {
-    
+
     @Autowired
     private PedidoModelAssembler pedidoModelAssembler;
-    
+
     @Autowired
     private PedidoResumoModelAssembler pedidoResumoModelAssembler;
-    
+
     @Autowired
     private PedidoInputDisassembler pedidoInputDisassembler;
-    
+
     @Autowired
     private PedidoRepository pedidoRepository;
-    
-    @Autowired 
+
+    @Autowired
     private EmissaoPedidoService emissaoPedido;
 
-    
+
     @GetMapping
     public Page<PedidoResumoDTO> pesquisar(PedidoFilter filtro, @PageableDefault(size = 10) Pageable pageable) {
         pageable = traduzirPageable(pageable);
-        
+
         Page<Pedido> pedidosPage = pedidoRepository.findAll(PedidoSpecs.usandoFiltro(filtro), pageable);
 
 
@@ -58,7 +58,7 @@ public class PedidoController {
                 pageable,
                 pedidosPage.getTotalElements()) ;
     }
-    
+
     @GetMapping("/{codigoPedido}")
     public PedidoDTO buscar(@PathVariable String codigoPedido) {
         Pedido pedido = emissaoPedido.buscarOuFalhar(codigoPedido);
@@ -82,7 +82,7 @@ public class PedidoController {
             throw new NegocioException(e.getMessage(), e);
         }
     }
-    
+
     private Pageable traduzirPageable(Pageable apiPageable) {
         var mapeamento = Map.of(
                 "codigo", "codigo",

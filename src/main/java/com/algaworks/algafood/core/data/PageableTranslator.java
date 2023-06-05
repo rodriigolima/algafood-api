@@ -7,6 +7,7 @@ import org.springframework.data.domain.Sort;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+
 public class PageableTranslator {
 
     public static Pageable translate(Pageable pageable, Map<String, String> fieldsMapping) {
