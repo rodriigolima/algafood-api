@@ -6,12 +6,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/pedidos/{pedidoId}")
+@RequestMapping("/pedidos/{codigoPedido}")
 public class FluxoPedidoController {
-    
+
     @Autowired
     private FluxoPedidoService fluxoPedido;
-    
+
     @PutMapping("/confirmacao")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void confirmar(@PathVariable String codigoPedido) {
