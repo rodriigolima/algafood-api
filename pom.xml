@@ -19,6 +19,7 @@
 		<java.version>19</java.version>
 		<mysql.version>8.0.31</mysql.version>
 		<modelmapper.version>3.0.0</modelmapper.version>
+		<jasperreports.version>6.20.5</jasperreports.version>
 	</properties>
 
 	<dependencies>
@@ -96,6 +97,17 @@
 			<version>${modelmapper.version}</version>
 		</dependency>
 
+		<dependency>
+			<groupId>net.sf.jasperreports</groupId>
+			<artifactId>jasperreports</artifactId>
+			<version>${jasperreports.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>net.sf.jasperreports</groupId>
+			<artifactId>jasperreports-functions</artifactId>
+			<version>${jasperreports.version}</version>
+		</dependency>
 	</dependencies>
 
 	<build>
