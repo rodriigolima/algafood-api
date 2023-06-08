@@ -3,6 +3,7 @@ package com.algaworks.algafood.domain.filter;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 import java.time.OffsetDateTime;
 
@@ -10,10 +11,10 @@ import java.time.OffsetDateTime;
 public class VendaDiariaFilter {
     private Long restauranteId;
 
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    @DateTimeFormat(iso = ISO.DATE_TIME)
     private OffsetDateTime dataCriacaoInicio;
 
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    @DateTimeFormat(iso = ISO.DATE_TIME)
     private OffsetDateTime dataCriacaoFim;
 
 }
