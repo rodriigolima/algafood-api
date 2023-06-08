@@ -6,11 +6,9 @@ import com.algaworks.algafood.domain.service.VendaReportService;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import org.hibernate.annotations.Target;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.lang.annotation.ElementType;
 import java.util.HashMap;
 import java.util.Locale;
 
@@ -27,7 +25,7 @@ public class PdfVendaReportService implements VendaReportService {
             var inputStream = this.getClass().getResourceAsStream("/relatorios/vendas-diarias.jasper");
 
             var parametros = new HashMap<String, Object>();
-            parametros.put("REPORT_LOCALE", new Locale("pt", "BR"));
+            parametros.put("REPORT_LOCALE", new Locale.Builder().setLanguage("pt").setRegion("BR").build());
 
             var vendaDiarias = vendaQueryService.consultarVendasDiarias(filtro, timeOffset);
 
