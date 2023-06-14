@@ -11,12 +11,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface ProdutoRepository extends JpaRepository<Produto, Long> {
+public interface ProdutoRepository extends JpaRepository<Produto, Long>, ProdutoRepositoryQueries  {
 
     @Query("from Produto where restaurante.id = :restaurante and id = :produto")
     Optional<Produto> findById(@Param("restaurante") Long restauranteId,
                                @Param("produto") Long produtoId);
 
     List<Produto> findByRestaurante(Restaurante restaurante);
-}    
-      
+}

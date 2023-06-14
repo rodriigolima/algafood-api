@@ -1,4 +1,4 @@
-create table foto_protudo (
+create table foto_produto (
     produto_id bigint not null,
     nome_arquivo varchar(150) not null,
     descricao varchar(150),
