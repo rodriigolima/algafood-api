@@ -12,6 +12,7 @@ import com.algaworks.algafood.domain.service.FotoStorageService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -72,8 +73,6 @@ public class RestauranteProdutoFotoController {
 
     }
 
-
-
     @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public FotoProdutoDTO atualizarFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId, @Valid
                               FotoProdutoInput fotoProdutoInput) throws IOException {
@@ -92,6 +91,12 @@ public class RestauranteProdutoFotoController {
         FotoProduto fotoSalva = catalogoFotoProduto.salvar(foto, arquivo.getInputStream());
 
         return fotoProdutoModelAssembler.toModel(fotoSalva);
+    }
+
+    @DeleteMapping
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deletarFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
+        catalogoFotoProduto.excluir(restauranteId, produtoId);
     }
 
     private void verificarCompatibilidadeMediaType(MediaType mediaTypeFoto, List<MediaType> mediaTypesAceitas)
