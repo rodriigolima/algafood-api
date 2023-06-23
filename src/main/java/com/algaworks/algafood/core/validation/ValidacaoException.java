@@ -10,6 +10,5 @@ import java.io.Serial;
 @Getter
 public class ValidacaoException extends RuntimeException{
 
-
     private BindingResult bindingResult;
 }
