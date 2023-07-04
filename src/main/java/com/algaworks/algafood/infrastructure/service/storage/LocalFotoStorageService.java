@@ -3,12 +3,8 @@ package com.algaworks.algafood.infrastructure.service.storage;
 import com.algaworks.algafood.core.storage.StorageProperties;
 import com.algaworks.algafood.domain.service.FotoStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -20,12 +16,15 @@ public class LocalFotoStorageService implements FotoStorageService {
 
 
     @Override
-    public InputStream recuperar(String nomeArquivo) {
+    public FotoRecuperada recuperar(String nomeArquivo) {
         Path arquivoPath = getArquivoPath(nomeArquivo);
 
         try {
-            return Files.newInputStream(arquivoPath);
-        } catch (IOException ex) {
+            FotoRecuperada fotoRecuperada = FotoRecuperada.builder()
+                    .inputStream(Files.newInputStream(arquivoPath)).build();
+
+            return fotoRecuperada;
+        } catch (Exception ex) {
             throw new StorageException("Não foi possível recuperar arquivo", ex);
         }
     }
@@ -36,7 +35,7 @@ public class LocalFotoStorageService implements FotoStorageService {
 
         try {
             FileCopyUtils.copy(novaFoto.getInputStream(), Files.newOutputStream(arquivoPath));
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             throw new StorageException("Não foi possível armazenar arquivo", ex);
         }
     }
@@ -47,7 +46,7 @@ public class LocalFotoStorageService implements FotoStorageService {
 
         try {
             Files.deleteIfExists(arquivoPath);
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             throw new StorageException("Não foi possível excluir arquivo. ",ex);
         }
     }
