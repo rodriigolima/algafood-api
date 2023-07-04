@@ -42,13 +42,13 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     @Autowired
     private MessageSource messageSource;
 
+
     @Override
     protected ResponseEntity<Object> handleHttpMediaTypeNotAcceptable(HttpMediaTypeNotAcceptableException ex,
                                                                       HttpHeaders headers, HttpStatusCode status,
                                                                       WebRequest request) {
         return ResponseEntity.status(status).headers(headers).build();
     }
-
 
     @Override
     protected ResponseEntity<Object> handleBindException(BindException ex, HttpHeaders headers, 
