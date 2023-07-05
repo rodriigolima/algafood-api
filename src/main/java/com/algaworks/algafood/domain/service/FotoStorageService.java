@@ -39,6 +39,14 @@ public interface FotoStorageService {
 
         private InputStream inputStream;
         private String url;
+
+        public boolean temUrl() {
+            return url != null;
+        }
+
+        public boolean temInputStream() {
+            return inputStream != null;
+        }
     }
 
 }
