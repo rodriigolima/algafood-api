@@ -11,7 +11,7 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 @Getter@Setter
 @Component
-@ConfigurationProperties("alfafood.email")
+@ConfigurationProperties("algafood.email")
 public class EmailProperties {
 
     @NonNull
