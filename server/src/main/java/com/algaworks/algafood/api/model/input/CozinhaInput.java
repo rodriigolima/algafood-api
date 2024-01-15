@@ -4,9 +4,11 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
-@Setter@Getter
+@Getter
+@Setter
 public class CozinhaInput {
 
     @NotBlank
     private String nome;
+
 }

@@ -21,6 +21,8 @@
 		<modelmapper.version>3.0.0</modelmapper.version>
 		<jasperreports.version>6.20.5</jasperreports.version>
 		<aws-java-sdk-s3.version>1.12.501</aws-java-sdk-s3.version>
+		<springdoc.version>2.3.0</springdoc.version>
+		<springdoc-hateoas.version>1.7.0</springdoc-hateoas.version>
 	</properties>
 
 	<dependencies>
@@ -29,6 +31,7 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -125,6 +128,27 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-freemarker</artifactId>
 		</dependency>
+
+		<!-- springdoc -->
+
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>${springdoc.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-hateoas</artifactId>
+			<version>${springdoc-hateoas.version}</version>
+		</dependency>
+
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-security</artifactId>
+            <version>${springdoc-hateoas.version}</version>
+        </dependency>
+
 	</dependencies>
 
 	<build>
