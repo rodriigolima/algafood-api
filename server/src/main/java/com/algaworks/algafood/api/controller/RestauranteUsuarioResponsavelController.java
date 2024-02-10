@@ -5,6 +5,7 @@ import com.algaworks.algafood.api.model.UsuarioDTO;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.service.CadastroRestauranteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +23,7 @@ public class RestauranteUsuarioResponsavelController {
     private UsuarioModelAssembler usuarioModelAssembler;
     
     @GetMapping
-    public List<UsuarioDTO> listar(@PathVariable Long restauranteId) {
+    public CollectionModel<UsuarioDTO> listar(@PathVariable Long restauranteId) {
         Restaurante restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
         
         return usuarioModelAssembler.toCollectionModel(restaurante.getResponsaveis());

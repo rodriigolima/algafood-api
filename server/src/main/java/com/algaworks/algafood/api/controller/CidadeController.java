@@ -11,10 +11,9 @@ import com.algaworks.algafood.domain.repository.CidadeRepository;
 import com.algaworks.algafood.domain.service.CadastroCidadeService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/cidades")
@@ -33,7 +32,7 @@ public class CidadeController {
     private CidadeInputDisassembler cidadeInputDisassembler;
     
     @GetMapping
-    public List<CidadeDTO> listar() { return cidadeModelAssembler.toCollectionModel(cidadeRepository.findAll()); }
+    public CollectionModel<CidadeDTO> listar() { return cidadeModelAssembler.toCollectionModel(cidadeRepository.findAll()); }
 
     @GetMapping("/{cidadeId}")
     public CidadeDTO buscar(@PathVariable Long cidadeId){

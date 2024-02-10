@@ -1,27 +1,48 @@
 package com.algaworks.algafood.api.assembler;
 
+import com.algaworks.algafood.api.AlgaLinks;
+import com.algaworks.algafood.api.controller.UsuarioController;
 import com.algaworks.algafood.api.model.UsuarioDTO;
 import com.algaworks.algafood.domain.model.Usuario;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.List;
 
 @Component
-public class UsuarioModelAssembler {
-    
+public class UsuarioModelAssembler
+        extends RepresentationModelAssemblerSupport<Usuario, UsuarioDTO> {
+
     @Autowired
     private ModelMapper modelMapper;
-    
-    public UsuarioDTO toModel(Usuario usuario) {
-        return modelMapper.map(usuario, UsuarioDTO.class);
+
+    @Autowired
+    private AlgaLinks algaLinks;
+
+    public UsuarioModelAssembler() {
+        super(UsuarioController.class, UsuarioDTO.class);
     }
 
-    public List<UsuarioDTO> toCollectionModel(Collection<Usuario> usuarios) {
-        return usuarios.stream()
-                .map(this::toModel)
-                .toList();
+    @Override
+    public UsuarioDTO toModel(Usuario usuario) {
+        UsuarioDTO dto = createModelWithId(usuario.getId(), usuario);
+        modelMapper.map(usuario, dto);
+
+        dto.add(algaLinks.linkToUsuarios("usuarios"));
+
+        dto.add(algaLinks.linkToGruposUsuario(usuario.getId(), "grupos-usuario"));
+
+        return dto;
     }
+
+    @Override
+    public CollectionModel<UsuarioDTO> toCollectionModel(Iterable<? extends Usuario> entities) {
+        return super.toCollectionModel(entities)
+                .add(algaLinks.linkToUsuarios());
+    }
+
 }

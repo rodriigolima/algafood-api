@@ -11,6 +11,7 @@ import com.algaworks.algafood.domain.repository.UsuarioRepository;
 import com.algaworks.algafood.domain.service.CadastroUsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,7 +34,7 @@ public class UsuarioController {
     private CadastroUsuarioService cadastroUsuario;
     
     @GetMapping
-    public List<UsuarioDTO> listar() { return usuarioModelAssembler.toCollectionModel(usuarioRepository.findAll()); }
+    public CollectionModel<UsuarioDTO> listar() { return usuarioModelAssembler.toCollectionModel(usuarioRepository.findAll()); }
 
     @GetMapping("/{usuarioId}")
     public UsuarioDTO buscar(@PathVariable Long usuarioId){

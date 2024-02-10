@@ -2,13 +2,16 @@ package com.algaworks.algafood.api.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.server.core.Relation;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 
-//@JsonFilter("pedidoFilter")
-@Setter@Getter
-public class PedidoResumoDTO {
+@Relation(collectionRelation = "pedidos")
+@Setter
+@Getter
+public class PedidoResumoDTO extends RepresentationModel<PedidoResumoDTO> {
 
     private String codigo;
     private BigDecimal subtotal;
@@ -16,6 +19,6 @@ public class PedidoResumoDTO {
     private BigDecimal valorTotal;
     private String status;
     private OffsetDateTime dataCriacao;
-    private RestauranteResumoDTO restaurante;
+    private RestauranteApenasNomeDTO restaurante;
     private UsuarioDTO cliente;
 }

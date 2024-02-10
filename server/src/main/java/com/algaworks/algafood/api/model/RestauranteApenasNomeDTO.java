@@ -5,25 +5,13 @@ import lombok.Setter;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.core.Relation;
 
-import java.math.BigDecimal;
-
 @Relation(collectionRelation = "restaurantes")
 @Setter
 @Getter
-public class RestauranteDTO extends RepresentationModel<RestauranteDTO> {
+public class RestauranteApenasNomeDTO extends RepresentationModel<RestauranteApenasNomeDTO> {
 
     private Long id;
 
     private String nome;
-
-    private BigDecimal taxaFrete;
-
-    private CozinhaDTO cozinha;
-
-    private Boolean ativo;
-
-    private Boolean aberto;
-
-    private EnderecoDTO endereco;
 
 }

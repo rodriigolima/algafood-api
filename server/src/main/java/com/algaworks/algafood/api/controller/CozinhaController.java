@@ -10,10 +10,12 @@ import com.algaworks.algafood.domain.service.CadastroCozinhaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -32,15 +34,16 @@ public class CozinhaController {
     
     @Autowired
     protected CozinhaModelAssembler cozinhaModelAssembler;
-    
-    @GetMapping
-    public Page<CozinhaDTO> listar(@PageableDefault(size = 10) Pageable pageable) { 
+
+    @Autowired
+    private PagedResourcesAssembler<Cozinha> pagedResourcesAssembler;
+
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public PagedModel<CozinhaDTO> listar(@PageableDefault() Pageable pageable) {
         Page<Cozinha> cozinhasPage = cozinhaRepository.findAll(pageable);
 
-        return new PageImpl<>(
-                cozinhaModelAssembler.toCollectionModel(cozinhasPage.getContent()), 
-                pageable,
-                cozinhasPage.getTotalElements()) ;
+        return pagedResourcesAssembler
+                .toModel(cozinhasPage, cozinhaModelAssembler);
     }
     
     
