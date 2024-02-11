@@ -48,13 +48,11 @@ public class RestauranteController {
     @Autowired
     private RestauranteApenasNomeModelAssembler restauranteApenasNomeModelAssembler;
 
-    @JsonView(RestauranteView.Resumo.class)
     @GetMapping
     public CollectionModel<RestauranteBasicoDTO> listar() {
         return restauranteBasicoModelAssembler.toCollectionModel(restauranteRepository.findAll());
     }
 
-    @JsonView(RestauranteView.ApenasNome.class)
     @GetMapping(params = "projecao=apenas-nome")
     public CollectionModel<RestauranteApenasNomeDTO> listarApenasNome() {
         return restauranteApenasNomeModelAssembler
