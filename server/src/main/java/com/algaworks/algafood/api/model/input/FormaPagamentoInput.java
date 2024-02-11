@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 public class FormaPagamentoInput {
 
-    @NotBlank
-    private String descricao;
+	@NotBlank
+	private String descricao;
 
-}  
+}

@@ -11,17 +11,17 @@ import java.util.List;
 
 @Component
 public class ProdutoModelAssembler {
-    
-    @Autowired
-    private ModelMapper modelMapper;
-    
-    public ProdutoDTO toModel(Produto produto) {
-        return modelMapper.map(produto, ProdutoDTO.class);
-    }
 
-    public List<ProdutoDTO> toCollectionModel(Collection<Produto> produtos) {
-        return produtos.stream()
-                .map(this::toModel)
-                .toList();
-    }
+	@Autowired
+	private ModelMapper modelMapper;
+
+	public ProdutoDTO toModel(Produto produto) {
+
+		return modelMapper.map(produto, ProdutoDTO.class);
+	}
+
+	public List<ProdutoDTO> toCollectionModel(Collection<Produto> produtos) {
+
+		return produtos.stream().map(this::toModel).toList();
+	}
 }

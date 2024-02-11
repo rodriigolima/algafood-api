@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 public class ModelMapperConfig {
 
     @Bean
-    public ModelMapper modelMapper() {
+    ModelMapper modelMapper() {
         var modelMapper = new ModelMapper();
 
 //		modelMapper.createTypeMap(Restaurante.class, RestauranteModel.class)

@@ -15,28 +15,30 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class StorageConfig {
 
-    @Autowired
-    private StorageProperties storageProperties;
+	@Autowired
+	private StorageProperties storageProperties;
 
-    @Bean
-    @ConditionalOnProperty(name = "algafood.storage.tipo", havingValue = "s3")
-    public AmazonS3 amazonS3() {
-        var credentials = new BasicAWSCredentials(storageProperties.getS3().getIdChaveAcesso(),
-                storageProperties.getS3().getChaveAcessoSecreta());
+	@Bean
+	@ConditionalOnProperty(name = "algafood.storage.tipo", havingValue = "s3")
+	AmazonS3 amazonS3() {
 
-        return AmazonS3ClientBuilder.standard()
-                .withCredentials(new AWSStaticCredentialsProvider(credentials))
-                .withRegion(storageProperties.getS3().getRegiao())
-                .build();
-    }
+		var credentials = new BasicAWSCredentials(storageProperties.getS3().getIdChaveAcesso(), storageProperties.getS3().getChaveAcessoSecreta());
 
-    @Bean
-    public FotoStorageService fotoStorageService() {
-        if (StorageProperties.TipoStorage.S3.equals(storageProperties.getTipo())) {
-            return new S3FotoStorageService();
-        } else {
-            return new LocalFotoStorageService();
-        }
+		return AmazonS3ClientBuilder.standard()
+				.withCredentials(new AWSStaticCredentialsProvider(credentials))
+				.withRegion(storageProperties.getS3().getRegiao())
+				.build();
+	}
 
-    }
+	@Bean
+	FotoStorageService fotoStorageService() {
+
+		if (StorageProperties.TipoStorage.S3.equals(storageProperties.getTipo())) {
+			return new S3FotoStorageService();
+		} else {
+			return new LocalFotoStorageService();
+		}
+
+	}
+	
 }

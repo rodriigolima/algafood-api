@@ -10,33 +10,33 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/pedidos/{codigoPedido}")
 public class FluxoPedidoController {
 
-    @Autowired
-    private FluxoPedidoService fluxoPedido;
+	@Autowired
+	private FluxoPedidoService fluxoPedido;
 
-    @PutMapping("/confirmacao")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<Void> confirmar(@PathVariable String codigoPedido) {
+	@PutMapping("/confirmacao")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public ResponseEntity<Void> confirmar(@PathVariable String codigoPedido) {
 
-        fluxoPedido.confirmar(codigoPedido);
+		fluxoPedido.confirmar(codigoPedido);
 
-        return ResponseEntity.noContent().build();
-    }
+		return ResponseEntity.noContent().build();
+	}
 
-    @PutMapping("/entrega")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<Void> entregar(@PathVariable String codigoPedido) {
+	@PutMapping("/entrega")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public ResponseEntity<Void> entregar(@PathVariable String codigoPedido) {
 
-        fluxoPedido.entregar(codigoPedido);
+		fluxoPedido.entregar(codigoPedido);
 
-        return ResponseEntity.noContent().build();
-    }
+		return ResponseEntity.noContent().build();
+	}
 
-    @PutMapping("/cancelamento")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<Void> cancelar(@PathVariable String codigoPedido) {
+	@PutMapping("/cancelamento")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public ResponseEntity<Void> cancelar(@PathVariable String codigoPedido) {
 
-        fluxoPedido.cancelar(codigoPedido);
+		fluxoPedido.cancelar(codigoPedido);
 
-        return ResponseEntity.noContent().build();
-    }
+		return ResponseEntity.noContent().build();
+	}
 }

@@ -9,4 +9,5 @@ import lombok.Getter;
 public class PedidoCanceladoEvent {
 
     private Pedido pedido;
+    
 }

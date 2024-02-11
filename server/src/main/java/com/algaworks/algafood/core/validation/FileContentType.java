@@ -15,11 +15,12 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Constraint(validatedBy = { FileCotentTypeValidator.class })
 public @interface FileContentType {
 
-    String message() default "Arquivo inválido";
+	String message() default "Arquivo inválido";
 
-    Class<?>[] groups() default { };
+	Class<?>[] groups() default {};
 
-    Class<? extends Payload>[] payload() default { };
+	Class<? extends Payload>[] payload() default {};
 
-    String[] allowed();
+	String[] allowed();
+	
 }

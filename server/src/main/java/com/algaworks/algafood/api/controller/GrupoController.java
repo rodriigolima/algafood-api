@@ -18,52 +18,56 @@ import java.util.List;
 @RequestMapping("/grupos")
 public class GrupoController {
 
-    @Autowired
-    private GrupoRepository grupoRepository;
-    
-    @Autowired
-    private GrupoModelAssembler grupoModelAssembler;
-    
-    @Autowired
-    private GrupoInputDisassembler grupoInputDisassembler;
-    
-    @Autowired
-    private CadastroGrupoService cadastroGrupo;
-    
-    @GetMapping
-    public List<GrupoDTO> listar() { return grupoModelAssembler.toCollectionModel(grupoRepository.findAll()); }
+	@Autowired
+	private GrupoRepository grupoRepository;
 
-    @GetMapping("/{grupoId}")
-    public GrupoDTO buscar(@PathVariable Long grupoId){
-        
-        Grupo grupo = cadastroGrupo.buscarOuFalhar(grupoId);
-        
-        return grupoModelAssembler.toModel(grupo);
-    }
-    
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public GrupoDTO adicionar(@RequestBody @Valid GrupoInput grupoInput){
-        
-        Grupo grupo = grupoInputDisassembler.toDomainObject(grupoInput);
-            
-        return grupoModelAssembler.toModel(cadastroGrupo.salvar(grupo));
-    }
-    
-    @PutMapping("/{grupoId}")
-    public GrupoDTO atualizar(@PathVariable Long grupoId, @RequestBody @Valid GrupoInput grupoInput){
-        
-        Grupo grupoAtual =  cadastroGrupo.buscarOuFalhar(grupoId);
-            
-        grupoInputDisassembler.copyToDomainObject(grupoInput, grupoAtual);
-            
-        return grupoModelAssembler.toModel(cadastroGrupo.salvar(grupoAtual));
-            
-    }
-    
-    @DeleteMapping("/{grupoId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void remover(@PathVariable Long grupoId) {
-        cadastroGrupo.excluir(grupoId);
-    }
+	@Autowired
+	private GrupoModelAssembler grupoModelAssembler;
+
+	@Autowired
+	private GrupoInputDisassembler grupoInputDisassembler;
+
+	@Autowired
+	private CadastroGrupoService cadastroGrupo;
+
+	@GetMapping
+	public List<GrupoDTO> listar() {
+
+		return grupoModelAssembler.toCollectionModel(grupoRepository.findAll());
+	}
+
+	@GetMapping("/{grupoId}")
+	public GrupoDTO buscar(@PathVariable Long grupoId) {
+
+		Grupo grupo = cadastroGrupo.buscarOuFalhar(grupoId);
+
+		return grupoModelAssembler.toModel(grupo);
+	}
+
+	@PostMapping
+	@ResponseStatus(HttpStatus.CREATED)
+	public GrupoDTO adicionar(@RequestBody @Valid GrupoInput grupoInput) {
+
+		Grupo grupo = grupoInputDisassembler.toDomainObject(grupoInput);
+
+		return grupoModelAssembler.toModel(cadastroGrupo.salvar(grupo));
+	}
+
+	@PutMapping("/{grupoId}")
+	public GrupoDTO atualizar(@PathVariable Long grupoId, @RequestBody @Valid GrupoInput grupoInput) {
+
+		Grupo grupoAtual = cadastroGrupo.buscarOuFalhar(grupoId);
+
+		grupoInputDisassembler.copyToDomainObject(grupoInput, grupoAtual);
+
+		return grupoModelAssembler.toModel(cadastroGrupo.salvar(grupoAtual));
+
+	}
+
+	@DeleteMapping("/{grupoId}")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void remover(@PathVariable Long grupoId) {
+
+		cadastroGrupo.excluir(grupoId);
+	}
 }

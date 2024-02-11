@@ -12,15 +12,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface ProdutoRepository extends JpaRepository<Produto, Long>, ProdutoRepositoryQueries  {
+public interface ProdutoRepository extends JpaRepository<Produto, Long>, ProdutoRepositoryQueries {
 
-    @Query("from Produto where restaurante.id = :restaurante and id = :produto")
-    Optional<Produto> findById(@Param("restaurante") Long restauranteId,
-                               @Param("produto") Long produtoId);
+	@Query("from Produto where restaurante.id = :restaurante and id = :produto")
+	Optional<Produto> findById(@Param("restaurante") Long restauranteId, @Param("produto") Long produtoId);
 
-    List<Produto> findByRestaurante(Restaurante restaurante);
+	List<Produto> findByRestaurante(Restaurante restaurante);
 
-    @Query("select f from FotoProduto f join f.produto p "
-            + "where p.restaurante.id = :restauranteId and f.produto.id = :produtoId")
-    Optional<FotoProduto> findFotoById(Long restauranteId, Long produtoId);
+	@Query("select f from FotoProduto f join f.produto p " + "where p.restaurante.id = :restauranteId and f.produto.id = :produtoId")
+	Optional<FotoProduto> findFotoById(Long restauranteId, Long produtoId);
 }

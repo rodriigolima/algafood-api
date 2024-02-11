@@ -1,5 +1,9 @@
 package com.algaworks.algafood.infrastructure.service.storage;
 
+import java.net.URL;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.algaworks.algafood.core.storage.StorageProperties;
 import com.algaworks.algafood.domain.service.FotoStorageService;
 import com.amazonaws.services.s3.AmazonS3;
@@ -7,64 +11,62 @@ import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.net.URL;
 
 public class S3FotoStorageService implements FotoStorageService {
 
-    @Autowired
-    private AmazonS3 amazonS3;
+	@Autowired
+	private AmazonS3 amazonS3;
 
-    @Autowired
-    private StorageProperties storageProperties;
+	@Autowired
+	private StorageProperties storageProperties;
 
-    @Override
-    public FotoRecuperada recuperar(String nomeArquivo) {
-        String caminhoArquivo = getCaminhoArquivo(nomeArquivo);
+	@Override
+	public FotoRecuperada recuperar(String nomeArquivo) {
 
-        URL url = amazonS3.getUrl(storageProperties.getS3().getBucket(), caminhoArquivo);
+		String caminhoArquivo = getCaminhoArquivo(nomeArquivo);
 
-        return FotoRecuperada.builder().url(url.toString()).build();
-    }
+		URL url = amazonS3.getUrl(storageProperties.getS3().getBucket(), caminhoArquivo);
 
-    @Override
-    public void armazenar(NovaFoto novaFoto) {
-        try {
-            String caminhoArquivo = getCaminhoArquivo(novaFoto.getNomeArquivo());
+		return FotoRecuperada.builder().url(url.toString()).build();
+	}
 
-            var objectMetadata = new ObjectMetadata();
-            objectMetadata.setContentType(novaFoto.getContentType());
+	@Override
+	public void armazenar(NovaFoto novaFoto) {
 
-            var putObjectRequest = new PutObjectRequest(
-                    storageProperties.getS3().getBucket(), caminhoArquivo,
-                    novaFoto.getInputStream(), objectMetadata).withCannedAcl(CannedAccessControlList.PublicRead);
+		try {
+			String caminhoArquivo = getCaminhoArquivo(novaFoto.getNomeArquivo());
 
-            amazonS3.putObject(putObjectRequest);
-        } catch (Exception ex) {
-            throw new StorageException("Não foi possível enviar arquivo para Amazon S3.",ex);
-        }
+			var objectMetadata = new ObjectMetadata();
+			objectMetadata.setContentType(novaFoto.getContentType());
 
-    }
+			var putObjectRequest = new PutObjectRequest(storageProperties.getS3().getBucket(), caminhoArquivo, novaFoto.getInputStream(),
+					objectMetadata).withCannedAcl(CannedAccessControlList.PublicRead);
 
-    @Override
-    public void remover(String nomeArquivo) {
-        try {
+			amazonS3.putObject(putObjectRequest);
+		} catch (Exception ex) {
+			throw new StorageException("Não foi possível enviar arquivo para Amazon S3.", ex);
+		}
 
-            String caminhoArquivo = getCaminhoArquivo(nomeArquivo);
+	}
 
-            var deleteObjectRequest = new DeleteObjectRequest(storageProperties.getS3().getBucket(),
-                    nomeArquivo);
+	@Override
+	public void remover(String nomeArquivo) {
 
-            amazonS3.deleteObject(deleteObjectRequest);
-        } catch (Exception ex) {
-            throw new StorageException("Não foi possível excluir arquivo para Amazon S3.",ex);
-        }
-    }
+		try {
 
-    private String getCaminhoArquivo(String nomeArquivo) {
-        return String.format("%s/%s", storageProperties.getS3().getDiretorioFotos(), nomeArquivo);
-    }
+			String caminhoArquivo = getCaminhoArquivo(nomeArquivo);
+
+			var deleteObjectRequest = new DeleteObjectRequest(storageProperties.getS3().getBucket(), caminhoArquivo);
+
+			amazonS3.deleteObject(deleteObjectRequest);
+		} catch (Exception ex) {
+			throw new StorageException("Não foi possível excluir arquivo para Amazon S3.", ex);
+		}
+	}
+
+	private String getCaminhoArquivo(String nomeArquivo) {
+
+		return String.format("%s/%s", storageProperties.getS3().getDiretorioFotos(), nomeArquivo);
+	}
 
 }

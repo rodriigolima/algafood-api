@@ -11,35 +11,35 @@ import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSuppor
 import org.springframework.stereotype.Component;
 
 @Component
-public class RestauranteApenasNomeModelAssembler
-        extends RepresentationModelAssemblerSupport<Restaurante, RestauranteApenasNomeDTO> {
+public class RestauranteApenasNomeModelAssembler extends RepresentationModelAssemblerSupport<Restaurante, RestauranteApenasNomeDTO> {
 
-    @Autowired
-    private ModelMapper modelMapper;
+	@Autowired
+	private ModelMapper modelMapper;
 
-    @Autowired
-    private AlgaLinks algaLinks;
+	@Autowired
+	private AlgaLinks algaLinks;
 
-    public RestauranteApenasNomeModelAssembler() {
-        super(RestauranteController.class, RestauranteApenasNomeDTO.class);
-    }
+	public RestauranteApenasNomeModelAssembler() {
 
-    @Override
-    public RestauranteApenasNomeDTO toModel(Restaurante restaurante) {
-        RestauranteApenasNomeDTO dto = createModelWithId(
-                restaurante.getId(), restaurante);
+		super(RestauranteController.class, RestauranteApenasNomeDTO.class);
+	}
 
-        modelMapper.map(restaurante, dto);
+	@Override
+	public RestauranteApenasNomeDTO toModel(Restaurante restaurante) {
 
-        dto.add(algaLinks.linkToRestaurantes("restaurantes"));
+		RestauranteApenasNomeDTO dto = createModelWithId(restaurante.getId(), restaurante);
 
-        return dto;
-    }
+		modelMapper.map(restaurante, dto);
 
-    @Override
-    public CollectionModel<RestauranteApenasNomeDTO> toCollectionModel(Iterable<? extends Restaurante> entities) {
-        return super.toCollectionModel(entities)
-                .add(algaLinks.linkToRestaurantes());
-    }
+		dto.add(algaLinks.linkToRestaurantes("restaurantes"));
+
+		return dto;
+	}
+
+	@Override
+	public CollectionModel<RestauranteApenasNomeDTO> toCollectionModel(Iterable<? extends Restaurante> entities) {
+
+		return super.toCollectionModel(entities).add(algaLinks.linkToRestaurantes());
+	}
 
 }

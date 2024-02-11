@@ -14,56 +14,57 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class CadastroGrupoService {
 
-    private static final String MSG_FORMA_GRUPO_EM_USO
-            = "Grupo de código %d não pode ser removida, pois está em uso";
-    
-    @Autowired
-    private GrupoRepository grupoRepository;
-    
-    @Autowired
-    private CadastroPermissaoService cadastroPermissao;
+	private static final String MSG_FORMA_GRUPO_EM_USO = "Grupo de código %d não pode ser removida, pois está em uso";
 
-    @Transactional
-    public Grupo salvar(Grupo grupo) {
-        return grupoRepository.save(grupo);
-    }
+	@Autowired
+	private GrupoRepository grupoRepository;
 
-    @Transactional
-    public void excluir(Long grupoId) {
-        try {
-            grupoRepository.deleteById(grupoId);
-            grupoRepository.flush();
+	@Autowired
+	private CadastroPermissaoService cadastroPermissao;
 
-        } catch (EmptyResultDataAccessException e) {
-            throw new GrupoNaoEncontradoException(grupoId);
+	@Transactional
+	public Grupo salvar(Grupo grupo) {
 
-        } catch (DataIntegrityViolationException e) {
-            throw new EntidadeEmUsoException(
-                    String.format(MSG_FORMA_GRUPO_EM_USO, grupoId));
-        }
-    }
-    
-    @Transactional
-    public void desassociarPermissao(Long grupoId, Long permissaoId) {
-        Grupo grupo = buscarOuFalhar(grupoId);
+		return grupoRepository.save(grupo);
+	}
 
-        Permissao permissao = cadastroPermissao.buscarOuFalhar(permissaoId);
-        
-        grupo.removerPermissao(permissao);
-    }
+	@Transactional
+	public void excluir(Long grupoId) {
 
-    @Transactional
-    public void associarPermissao(Long grupoId, Long permissaoId) {
-        Grupo grupo = buscarOuFalhar(grupoId);
+		try {
+			grupoRepository.deleteById(grupoId);
+			grupoRepository.flush();
 
-        Permissao permissao = cadastroPermissao.buscarOuFalhar(permissaoId);
+		} catch (EmptyResultDataAccessException e) {
+			throw new GrupoNaoEncontradoException(grupoId);
 
-        grupo.adicionarPermissao(permissao);
-    }
-    
+		} catch (DataIntegrityViolationException e) {
+			throw new EntidadeEmUsoException(String.format(MSG_FORMA_GRUPO_EM_USO, grupoId));
+		}
+	}
 
-    public Grupo buscarOuFalhar(Long grupoId) {
-        return grupoRepository.findById(grupoId)
-                .orElseThrow(() -> new GrupoNaoEncontradoException(grupoId));
-    }
+	@Transactional
+	public void desassociarPermissao(Long grupoId, Long permissaoId) {
+
+		Grupo grupo = buscarOuFalhar(grupoId);
+
+		Permissao permissao = cadastroPermissao.buscarOuFalhar(permissaoId);
+
+		grupo.removerPermissao(permissao);
+	}
+
+	@Transactional
+	public void associarPermissao(Long grupoId, Long permissaoId) {
+
+		Grupo grupo = buscarOuFalhar(grupoId);
+
+		Permissao permissao = cadastroPermissao.buscarOuFalhar(permissaoId);
+
+		grupo.adicionarPermissao(permissao);
+	}
+
+	public Grupo buscarOuFalhar(Long grupoId) {
+
+		return grupoRepository.findById(grupoId).orElseThrow(() -> new GrupoNaoEncontradoException(grupoId));
+	}
 }

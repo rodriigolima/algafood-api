@@ -23,96 +23,92 @@ import java.util.concurrent.TimeUnit;
 @RestController
 @RequestMapping("/formas-pagamento")
 public class FormaPagamentoController {
-    
-    @Autowired
-    private CadastroFormaPagamentoService cadastroFormaPagamento;
-    
-    @Autowired
-    FormaPagamentoRepository formaPagamentoRepository;
-    
-    @Autowired
-    private FormaPagamentoModelAssembler formaPagamentoModelAssembler;
-    
-    @Autowired
-    private FormaPagamentoInputDisassembler formaPagamentoInputDisassembler;
 
-    @GetMapping
-    public ResponseEntity<List<FormaPagamentoDTO>> listar(ServletWebRequest request) {
-        ShallowEtagHeaderFilter.disableContentCaching(request.getRequest());
+	@Autowired
+	private CadastroFormaPagamentoService cadastroFormaPagamento;
 
-        String eTag = "0";
+	@Autowired
+	FormaPagamentoRepository formaPagamentoRepository;
 
-        OffsetDateTime dataUltimaAtualizacao = formaPagamentoRepository.getDataUltimaAtualizacao();
+	@Autowired
+	private FormaPagamentoModelAssembler formaPagamentoModelAssembler;
 
-        if (dataUltimaAtualizacao != null)
-            eTag = String.valueOf(dataUltimaAtualizacao.toEpochSecond());
+	@Autowired
+	private FormaPagamentoInputDisassembler formaPagamentoInputDisassembler;
 
-        if (request.checkNotModified(eTag))
-            return null;
+	@GetMapping
+	public ResponseEntity<List<FormaPagamentoDTO>> listar(ServletWebRequest request) {
 
-        List<FormaPagamento> todasFormasPagamentos = formaPagamentoRepository.findAll();
+		ShallowEtagHeaderFilter.disableContentCaching(request.getRequest());
 
-        List<FormaPagamentoDTO> formasPagamentosModel = formaPagamentoModelAssembler
-                .toCollectionModel(todasFormasPagamentos);
+		String eTag = "0";
 
-        return ResponseEntity.ok()
-                .cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS).cachePublic())
-                .eTag(eTag)
-                .body(formasPagamentosModel);
-    }
+		OffsetDateTime dataUltimaAtualizacao = formaPagamentoRepository.getDataUltimaAtualizacao();
 
-    @GetMapping("/{formaPagamentoId}")
-    public ResponseEntity<FormaPagamentoDTO> buscar(@PathVariable Long formaPagamentoId, ServletWebRequest request) {
-        ShallowEtagHeaderFilter.disableContentCaching(request.getRequest());
+		if (dataUltimaAtualizacao != null)
+			eTag = String.valueOf(dataUltimaAtualizacao.toEpochSecond());
 
-        String eTag = "0";
+		if (request.checkNotModified(eTag))
+			return null;
 
-        OffsetDateTime dataAtualizacao = formaPagamentoRepository
-                .getDataAtualizacaoById(formaPagamentoId);
+		List<FormaPagamento> todasFormasPagamentos = formaPagamentoRepository.findAll();
 
-        if (dataAtualizacao != null) {
-            eTag = String.valueOf(dataAtualizacao.toEpochSecond());
-        }
+		List<FormaPagamentoDTO> formasPagamentosModel = formaPagamentoModelAssembler.toCollectionModel(todasFormasPagamentos);
 
-        if (request.checkNotModified(eTag)) {
-            return null;
-        }
+		return ResponseEntity.ok().cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS).cachePublic()).eTag(eTag).body(formasPagamentosModel);
+	}
 
-        FormaPagamento formaPagamento = cadastroFormaPagamento.buscarOuFalhar(formaPagamentoId);
+	@GetMapping("/{formaPagamentoId}")
+	public ResponseEntity<FormaPagamentoDTO> buscar(@PathVariable Long formaPagamentoId, ServletWebRequest request) {
 
-        FormaPagamentoDTO formaPagamentoModel = formaPagamentoModelAssembler.toModel(formaPagamento);
+		ShallowEtagHeaderFilter.disableContentCaching(request.getRequest());
 
-        return ResponseEntity.ok()
-                .cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS))
-                .eTag(eTag)
-                .body(formaPagamentoModel);
-    }
+		String eTag = "0";
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public FormaPagamentoDTO adicionar(@RequestBody @Valid FormaPagamentoInput formaPagamentoInput) {
-        FormaPagamento formaPagamento = formaPagamentoInputDisassembler.toDomainObject(formaPagamentoInput);
+		OffsetDateTime dataAtualizacao = formaPagamentoRepository.getDataAtualizacaoById(formaPagamentoId);
 
-        formaPagamento = cadastroFormaPagamento.salvar(formaPagamento);
+		if (dataAtualizacao != null) {
+			eTag = String.valueOf(dataAtualizacao.toEpochSecond());
+		}
 
-        return formaPagamentoModelAssembler.toModel(formaPagamento);
-    }
+		if (request.checkNotModified(eTag)) {
+			return null;
+		}
 
-    @PutMapping("/{formaPagamentoId}")
-    public FormaPagamentoDTO atualizar(@PathVariable Long formaPagamentoId,
-                                         @RequestBody @Valid FormaPagamentoInput formaPagamentoInput) {
-        FormaPagamento formaPagamentoAtual = cadastroFormaPagamento.buscarOuFalhar(formaPagamentoId);
+		FormaPagamento formaPagamento = cadastroFormaPagamento.buscarOuFalhar(formaPagamentoId);
 
-        formaPagamentoInputDisassembler.copyToDomainObject(formaPagamentoInput, formaPagamentoAtual);
+		FormaPagamentoDTO formaPagamentoModel = formaPagamentoModelAssembler.toModel(formaPagamento);
 
-        formaPagamentoAtual = cadastroFormaPagamento.salvar(formaPagamentoAtual);
+		return ResponseEntity.ok().cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS)).eTag(eTag).body(formaPagamentoModel);
+	}
 
-        return formaPagamentoModelAssembler.toModel(formaPagamentoAtual);
-    }
+	@PostMapping
+	@ResponseStatus(HttpStatus.CREATED)
+	public FormaPagamentoDTO adicionar(@RequestBody @Valid FormaPagamentoInput formaPagamentoInput) {
 
-    @DeleteMapping("/{formaPagamentoId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void remover(@PathVariable Long formaPagamentoId) {
-        cadastroFormaPagamento.excluir(formaPagamentoId);
-    }
+		FormaPagamento formaPagamento = formaPagamentoInputDisassembler.toDomainObject(formaPagamentoInput);
+
+		formaPagamento = cadastroFormaPagamento.salvar(formaPagamento);
+
+		return formaPagamentoModelAssembler.toModel(formaPagamento);
+	}
+
+	@PutMapping("/{formaPagamentoId}")
+	public FormaPagamentoDTO atualizar(@PathVariable Long formaPagamentoId, @RequestBody @Valid FormaPagamentoInput formaPagamentoInput) {
+
+		FormaPagamento formaPagamentoAtual = cadastroFormaPagamento.buscarOuFalhar(formaPagamentoId);
+
+		formaPagamentoInputDisassembler.copyToDomainObject(formaPagamentoInput, formaPagamentoAtual);
+
+		formaPagamentoAtual = cadastroFormaPagamento.salvar(formaPagamentoAtual);
+
+		return formaPagamentoModelAssembler.toModel(formaPagamentoAtual);
+	}
+
+	@DeleteMapping("/{formaPagamentoId}")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void remover(@PathVariable Long formaPagamentoId) {
+
+		cadastroFormaPagamento.excluir(formaPagamentoId);
+	}
 }

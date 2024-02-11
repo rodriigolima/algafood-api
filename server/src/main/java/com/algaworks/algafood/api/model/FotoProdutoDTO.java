@@ -7,9 +7,12 @@ import lombok.Setter;
 @Setter
 public class FotoProdutoDTO {
 
-    private String nomeArquivo;
-    private String descricao;
-    private String contentType;
-    private Long tamanho;
+	private String nomeArquivo;
+
+	private String descricao;
+
+	private String contentType;
+
+	private Long tamanho;
 
 }

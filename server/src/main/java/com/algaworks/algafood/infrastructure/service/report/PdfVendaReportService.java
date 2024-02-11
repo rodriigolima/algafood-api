@@ -15,28 +15,28 @@ import java.util.Locale;
 @Service
 public class PdfVendaReportService implements VendaReportService {
 
-    @Autowired
-    private VendaQueryService vendaQueryService;
+	@Autowired
+	private VendaQueryService vendaQueryService;
 
-    @Override
-    public byte[] emitirVendasDiarias(VendaDiariaFilter filtro, String timeOffset) {
+	@Override
+	public byte[] emitirVendasDiarias(VendaDiariaFilter filtro, String timeOffset) {
 
-        try {
-            var inputStream = this.getClass().getResourceAsStream("/relatorios/vendas-diarias.jasper");
+		try {
+			var inputStream = this.getClass().getResourceAsStream("/relatorios/vendas-diarias.jasper");
 
-            var parametros = new HashMap<String, Object>();
-            parametros.put("REPORT_LOCALE", new Locale.Builder().setLanguage("pt").setRegion("BR").build());
+			var parametros = new HashMap<String, Object>();
+			parametros.put("REPORT_LOCALE", new Locale.Builder().setLanguage("pt").setRegion("BR").build());
 
-            var vendaDiarias = vendaQueryService.consultarVendasDiarias(filtro, timeOffset);
+			var vendaDiarias = vendaQueryService.consultarVendasDiarias(filtro, timeOffset);
 
-            var dataSource = new JRBeanCollectionDataSource(vendaDiarias);
+			var dataSource = new JRBeanCollectionDataSource(vendaDiarias);
 
-            var jasperPrint = JasperFillManager.fillReport(inputStream, parametros, dataSource);
+			var jasperPrint = JasperFillManager.fillReport(inputStream, parametros, dataSource);
 
-            return JasperExportManager.exportReportToPdf(jasperPrint);
-        } catch (Exception ex) {
-            throw new ReportException("Não foi possível emitir relatório de vendas diárias", ex);
-        }
+			return JasperExportManager.exportReportToPdf(jasperPrint);
+		} catch (Exception ex) {
+			throw new ReportException("Não foi possível emitir relatório de vendas diárias", ex);
+		}
 
-    }
+	}
 }

@@ -2,7 +2,12 @@ package com.algaworks.algafood.domain.exception;
 
 public class FotoProdutoNaoEncontradaException extends EntidadeNaoEncontradaException {
 
-    public FotoProdutoNaoEncontradaException(String mensagem) {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public FotoProdutoNaoEncontradaException(String mensagem) {
         super(mensagem);
     }
 

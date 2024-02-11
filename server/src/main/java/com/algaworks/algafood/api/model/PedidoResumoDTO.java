@@ -13,12 +13,19 @@ import java.time.OffsetDateTime;
 @Getter
 public class PedidoResumoDTO extends RepresentationModel<PedidoResumoDTO> {
 
-    private String codigo;
-    private BigDecimal subtotal;
-    private BigDecimal taxaFrete;
-    private BigDecimal valorTotal;
-    private String status;
-    private OffsetDateTime dataCriacao;
-    private RestauranteApenasNomeDTO restaurante;
-    private UsuarioDTO cliente;
+	private String codigo;
+
+	private BigDecimal subtotal;
+
+	private BigDecimal taxaFrete;
+
+	private BigDecimal valorTotal;
+
+	private String status;
+
+	private OffsetDateTime dataCriacao;
+
+	private RestauranteApenasNomeDTO restaurante;
+
+	private UsuarioDTO cliente;
 }

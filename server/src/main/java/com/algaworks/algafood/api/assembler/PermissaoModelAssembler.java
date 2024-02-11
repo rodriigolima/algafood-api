@@ -11,17 +11,17 @@ import java.util.List;
 
 @Component
 public class PermissaoModelAssembler {
-    
-    @Autowired
-    private ModelMapper modelMapper;
-    
-    public PermissaoDTO toModel(Permissao permissao) {
-        return modelMapper.map(permissao, PermissaoDTO.class);
-    }
 
-    public List<PermissaoDTO> toCollectionModel(Collection<Permissao> permissoes) {
-        return permissoes.stream()
-                .map(this::toModel)
-                .toList();
-    }
+	@Autowired
+	private ModelMapper modelMapper;
+
+	public PermissaoDTO toModel(Permissao permissao) {
+
+		return modelMapper.map(permissao, PermissaoDTO.class);
+	}
+
+	public List<PermissaoDTO> toCollectionModel(Collection<Permissao> permissoes) {
+
+		return permissoes.stream().map(this::toModel).toList();
+	}
 }

@@ -8,7 +8,7 @@ import lombok.Setter;
 @Setter
 public class CozinhaInput {
 
-    @NotBlank
-    private String nome;
+	@NotBlank
+	private String nome;
 
 }

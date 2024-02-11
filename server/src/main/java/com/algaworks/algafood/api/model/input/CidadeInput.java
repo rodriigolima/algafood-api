@@ -6,14 +6,15 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
-@Setter@Getter
+@Setter
+@Getter
 public class CidadeInput {
-    
-    @NotBlank
-    private String nome;
 
-    @Valid
-    @NotNull
-    private EstadoIdInput estado;
-    
+	@NotBlank
+	private String nome;
+
+	@Valid
+	@NotNull
+	private EstadoIdInput estado;
+
 }

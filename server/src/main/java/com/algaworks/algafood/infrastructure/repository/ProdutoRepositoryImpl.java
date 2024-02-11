@@ -10,18 +10,20 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 public class ProdutoRepositoryImpl implements ProdutoRepositoryQueries {
 
-    @PersistenceContext
-    private EntityManager entityManager;
+	@PersistenceContext
+	private EntityManager entityManager;
 
-    @Transactional
-    @Override
-    public FotoProduto save(FotoProduto fotoProduto) {
-        return entityManager.merge(fotoProduto);
-    }
+	@Transactional
+	@Override
+	public FotoProduto save(FotoProduto fotoProduto) {
 
-    @Transactional
-    @Override
-    public void delete(FotoProduto fotoProduto) {
-        entityManager.remove(fotoProduto);
-    }
+		return entityManager.merge(fotoProduto);
+	}
+
+	@Transactional
+	@Override
+	public void delete(FotoProduto fotoProduto) {
+
+		entityManager.remove(fotoProduto);
+	}
 }

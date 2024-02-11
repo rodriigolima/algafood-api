@@ -11,17 +11,17 @@ import java.util.List;
 
 @Component
 public class FormaPagamentoModelAssembler {
-    
-    @Autowired
-    private ModelMapper modelMapper;
-    
-    public FormaPagamentoDTO toModel(FormaPagamento formaPagamento) {
-        return modelMapper.map(formaPagamento, FormaPagamentoDTO.class);
-    }
 
-    public List<FormaPagamentoDTO> toCollectionModel(Collection<FormaPagamento> formaPagamentos) {
-        return formaPagamentos.stream()
-                .map(this::toModel)
-                .toList();
-    }
+	@Autowired
+	private ModelMapper modelMapper;
+
+	public FormaPagamentoDTO toModel(FormaPagamento formaPagamento) {
+
+		return modelMapper.map(formaPagamento, FormaPagamentoDTO.class);
+	}
+
+	public List<FormaPagamentoDTO> toCollectionModel(Collection<FormaPagamento> formaPagamentos) {
+
+		return formaPagamentos.stream().map(this::toModel).toList();
+	}
 }

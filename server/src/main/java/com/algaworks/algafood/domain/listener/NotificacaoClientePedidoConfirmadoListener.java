@@ -10,21 +10,21 @@ import org.springframework.transaction.event.TransactionalEventListener;
 @Component
 public class NotificacaoClientePedidoConfirmadoListener {
 
-    @Autowired
-    private EnvioEmailService envioEmail;
+	@Autowired
+	private EnvioEmailService envioEmail;
 
-    @TransactionalEventListener
-    public void onConfirmarPedido(PedidoConfirmadoEvent event) {
+	@TransactionalEventListener
+	public void onConfirmarPedido(PedidoConfirmadoEvent event) {
 
-        Pedido pedido = event.getPedido();
+		Pedido pedido = event.getPedido();
 
-        var mensagem = EnvioEmailService.Mensagem.builder()
-                .assunto(pedido.getRestaurante().getNome() + " - Pedido confirmado")
-                .corpo("pedido-confirmado.html")
-                .variavel("pedido", pedido)
-                .destinatario(pedido.getCliente().getEmail())
-                .build();
+		var mensagem = EnvioEmailService.Mensagem.builder()
+				.assunto(pedido.getRestaurante().getNome() + " - Pedido confirmado")
+				.corpo("pedido-confirmado.html")
+				.variavel("pedido", pedido)
+				.destinatario(pedido.getCliente().getEmail())
+				.build();
 
-        envioEmail.enviar(mensagem);
-    }
+		envioEmail.enviar(mensagem);
+	}
 }

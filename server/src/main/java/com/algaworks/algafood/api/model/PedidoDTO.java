@@ -14,19 +14,32 @@ import java.util.List;
 @Getter
 public class PedidoDTO extends RepresentationModel<PedidoDTO> {
 
-    private String codigo;
-    private BigDecimal subtotal;
-    private BigDecimal taxaFrete;
-    private BigDecimal valorTotal;
-    private String status;
-    private OffsetDateTime dataCriacao;
-    private OffsetDateTime dataConfirmacao;
-    private OffsetDateTime dataEntrega;
-    private OffsetDateTime dataCancelamento;
-    private RestauranteApenasNomeDTO  restaurante;
-    private UsuarioDTO cliente;
-    private FormaPagamentoDTO formaPagamento;
-    private EnderecoDTO enderecoEntrega;
-    private List<ItemPedidoDTO> itens;
+	private String codigo;
+
+	private BigDecimal subtotal;
+
+	private BigDecimal taxaFrete;
+
+	private BigDecimal valorTotal;
+
+	private String status;
+
+	private OffsetDateTime dataCriacao;
+
+	private OffsetDateTime dataConfirmacao;
+
+	private OffsetDateTime dataEntrega;
+
+	private OffsetDateTime dataCancelamento;
+
+	private RestauranteApenasNomeDTO restaurante;
+
+	private UsuarioDTO cliente;
+
+	private FormaPagamentoDTO formaPagamento;
+
+	private EnderecoDTO enderecoEntrega;
+
+	private List<ItemPedidoDTO> itens;
 
 }

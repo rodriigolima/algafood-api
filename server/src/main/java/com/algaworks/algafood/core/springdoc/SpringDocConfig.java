@@ -9,14 +9,13 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class SpringDocConfig {
 
-    @Bean
-    public OpenAPI openAPI() {
-        return new OpenAPI()
-                .info(new Info()
-                        .title("AlgaFood API")
-                        .version("v1")
-                        .description("Api Aberta para clientes e restaurantes")
-                        .license(new License().name("Apache 2.0").url("http://springdoc.org")))
-                ;
-    }
+	@Bean
+	OpenAPI openAPI() {
+
+		return new OpenAPI().info(new Info().title("AlgaFood API")
+				.version("v1")
+				.description("Api Aberta para clientes e restaurantes")
+				.license(new License().name("Apache 2.0").url("http://springdoc.org")));
+	}
+	
 }

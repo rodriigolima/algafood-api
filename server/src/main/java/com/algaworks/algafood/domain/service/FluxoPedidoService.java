@@ -9,34 +9,36 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class FluxoPedidoService {
 
-    @Autowired
-    private EmissaoPedidoService emissaoPedido;
+	@Autowired
+	private EmissaoPedidoService emissaoPedido;
 
-    @Autowired
-    private PedidoRepository pedidoRepository;
+	@Autowired
+	private PedidoRepository pedidoRepository;
 
-    @Transactional
-    public void confirmar(String codigoPedido) {
-        Pedido pedido = emissaoPedido.buscarOuFalhar(codigoPedido);
-        pedido.confirmar();
+	@Transactional
+	public void confirmar(String codigoPedido) {
 
-        pedidoRepository.save(pedido);
-    }
+		Pedido pedido = emissaoPedido.buscarOuFalhar(codigoPedido);
+		pedido.confirmar();
 
-    @Transactional
-    public void entregar(String codigoPedido) {
-        Pedido pedido = emissaoPedido.buscarOuFalhar(codigoPedido);
+		pedidoRepository.save(pedido);
+	}
 
-        pedido.entregar();
-    }
+	@Transactional
+	public void entregar(String codigoPedido) {
 
-    @Transactional
-    public void cancelar(String codigoPedido) {
-        Pedido pedido = emissaoPedido.buscarOuFalhar(codigoPedido);
-        pedido.cancelar();
+		Pedido pedido = emissaoPedido.buscarOuFalhar(codigoPedido);
 
-        pedidoRepository.save(pedido);
-    }
+		pedido.entregar();
+	}
+
+	@Transactional
+	public void cancelar(String codigoPedido) {
+
+		Pedido pedido = emissaoPedido.buscarOuFalhar(codigoPedido);
+		pedido.cancelar();
+
+		pedidoRepository.save(pedido);
+	}
 
 }
-

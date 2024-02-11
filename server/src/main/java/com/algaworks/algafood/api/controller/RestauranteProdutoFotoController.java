@@ -27,90 +27,88 @@ import java.util.List;
 @RequestMapping("/restaurantes/{restauranteId}/produtos/{produtoId}/foto")
 public class RestauranteProdutoFotoController {
 
-    @Autowired
-    private CadastroProdutoService cadastroProduto;
+	@Autowired
+	private CadastroProdutoService cadastroProduto;
 
-    @Autowired
-    private CatalogoFotoProdutoService catalogoFotoProduto;
+	@Autowired
+	private CatalogoFotoProdutoService catalogoFotoProduto;
 
-    @Autowired
-    private FotoProdutoModelAssembler fotoProdutoModelAssembler;
+	@Autowired
+	private FotoProdutoModelAssembler fotoProdutoModelAssembler;
 
-    @Autowired
-    private FotoStorageService fotoStorage;
+	@Autowired
+	private FotoStorageService fotoStorage;
 
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	public FotoProdutoDTO buscar(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public FotoProdutoDTO buscar(@PathVariable Long restauranteId,
-                                   @PathVariable Long produtoId) {
-        FotoProduto fotoProduto = catalogoFotoProduto.buscarOuFalhar(restauranteId, produtoId);
+		FotoProduto fotoProduto = catalogoFotoProduto.buscarOuFalhar(restauranteId, produtoId);
 
-        return fotoProdutoModelAssembler.toModel(fotoProduto);
-    }
+		return fotoProdutoModelAssembler.toModel(fotoProduto);
+	}
 
-    @GetMapping
-    public ResponseEntity<?> servir(@PathVariable Long restauranteId,
-                                                      @PathVariable Long produtoId,
-                                                      @RequestHeader(name = "accept") String acceptHeader)
-            throws HttpMediaTypeNotAcceptableException {
-        try {
-            FotoProduto fotoProduto = catalogoFotoProduto.buscarOuFalhar(restauranteId, produtoId);
+	@GetMapping
+	public ResponseEntity<?> servir(@PathVariable Long restauranteId, @PathVariable Long produtoId, @RequestHeader(name = "accept") String acceptHeader)
+			throws HttpMediaTypeNotAcceptableException {
 
-            MediaType mediaTypeFoto = MediaType.parseMediaType(fotoProduto.getContentType());
+		try {
+			FotoProduto fotoProduto = catalogoFotoProduto.buscarOuFalhar(restauranteId, produtoId);
 
-            List<MediaType> mediaTypesAceitas = MediaType.parseMediaTypes(acceptHeader);
+			MediaType mediaTypeFoto = MediaType.parseMediaType(fotoProduto.getContentType());
 
-            verificarCompatibilidadeMediaType(mediaTypeFoto, mediaTypesAceitas);
+			List<MediaType> mediaTypesAceitas = MediaType.parseMediaTypes(acceptHeader);
 
-            FotoStorageService.FotoRecuperada fotoRecuperada = fotoStorage.recuperar(fotoProduto.getNomeArquivo());
+			verificarCompatibilidadeMediaType(mediaTypeFoto, mediaTypesAceitas);
 
-            if (fotoRecuperada.temUrl()) {
-                 return ResponseEntity.status(HttpStatus.FOUND)
-                         .header(HttpHeaders.LOCATION, fotoRecuperada.getUrl()).build();
-            } else {
-                return ResponseEntity.ok().contentType(mediaTypeFoto)
-                        .body(new InputStreamResource(fotoRecuperada.getInputStream()));
-            }
-        } catch (EntidadeNaoEncontradaException ex) {
-            return ResponseEntity.notFound().build();
-        }
+			FotoStorageService.FotoRecuperada fotoRecuperada = fotoStorage.recuperar(fotoProduto.getNomeArquivo());
 
-    }
+			if (fotoRecuperada.temUrl()) {
+				return ResponseEntity.status(HttpStatus.FOUND).header(HttpHeaders.LOCATION, fotoRecuperada.getUrl()).build();
+			} else {
+				return ResponseEntity.ok().contentType(mediaTypeFoto).body(new InputStreamResource(fotoRecuperada.getInputStream()));
+			}
+		} catch (EntidadeNaoEncontradaException ex) {
+			return ResponseEntity.notFound().build();
+		}
 
-    @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public FotoProdutoDTO atualizarFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId, @Valid
-                              FotoProdutoInput fotoProdutoInput) throws IOException {
-        Produto produto = cadastroProduto.buscarOuFalhar(restauranteId, produtoId);
+	}
 
-        MultipartFile arquivo = fotoProdutoInput.getArquivo();
+	@PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	public FotoProdutoDTO atualizarFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId, @Valid FotoProdutoInput fotoProdutoInput)
+			throws IOException {
 
-        FotoProduto foto = new FotoProduto();
+		Produto produto = cadastroProduto.buscarOuFalhar(restauranteId, produtoId);
 
-        foto.setProduto(produto);
-        foto.setDescricao(fotoProdutoInput.getDescricao());
-        foto.setContentType(arquivo.getContentType());
-        foto.setTamanho(arquivo.getSize());
-        foto.setNomeArquivo(arquivo.getOriginalFilename());
+		MultipartFile arquivo = fotoProdutoInput.getArquivo();
 
-        FotoProduto fotoSalva = catalogoFotoProduto.salvar(foto, arquivo.getInputStream());
+		FotoProduto foto = new FotoProduto();
 
-        return fotoProdutoModelAssembler.toModel(fotoSalva);
-    }
+		foto.setProduto(produto);
+		foto.setDescricao(fotoProdutoInput.getDescricao());
+		foto.setContentType(arquivo.getContentType());
+		foto.setTamanho(arquivo.getSize());
+		foto.setNomeArquivo(arquivo.getOriginalFilename());
 
-    @DeleteMapping
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deletarFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
-        catalogoFotoProduto.excluir(restauranteId, produtoId);
-    }
+		FotoProduto fotoSalva = catalogoFotoProduto.salvar(foto, arquivo.getInputStream());
 
-    private void verificarCompatibilidadeMediaType(MediaType mediaTypeFoto, List<MediaType> mediaTypesAceitas)
-            throws HttpMediaTypeNotAcceptableException {
-        boolean compativel = mediaTypesAceitas.stream()
-                .anyMatch(mediaTypeAceita -> mediaTypeAceita.isCompatibleWith(mediaTypeFoto));
+		return fotoProdutoModelAssembler.toModel(fotoSalva);
+	}
 
-        if (!compativel) {
-            throw new HttpMediaTypeNotAcceptableException(mediaTypesAceitas);
+	@DeleteMapping
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void deletarFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
 
-        }
-    }
+		catalogoFotoProduto.excluir(restauranteId, produtoId);
+	}
+
+	private void verificarCompatibilidadeMediaType(MediaType mediaTypeFoto, List<MediaType> mediaTypesAceitas)
+			throws HttpMediaTypeNotAcceptableException {
+
+		boolean compativel = mediaTypesAceitas.stream().anyMatch(mediaTypeAceita -> mediaTypeAceita.isCompatibleWith(mediaTypeFoto));
+
+		if (!compativel) {
+			throw new HttpMediaTypeNotAcceptableException(mediaTypesAceitas);
+
+		}
+	}
 }

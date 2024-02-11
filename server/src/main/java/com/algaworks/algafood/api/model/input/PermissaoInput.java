@@ -4,12 +4,14 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
-@Setter@Getter
+@Setter
+@Getter
 public class PermissaoInput {
 
-    @NotBlank
-    private String nome;
+	@NotBlank
+	private String nome;
 
-    @NotBlank
-    private String descricao;
+	@NotBlank
+	private String descricao;
+	
 }

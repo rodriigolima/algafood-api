@@ -10,10 +10,9 @@ import java.time.OffsetDateTime;
 @Repository
 public interface FormaPagamentoRepository extends JpaRepository<FormaPagamento, Long> {
 
-    @Query("select max(dataAtualizacao) from FormaPagamento")
-    OffsetDateTime getDataUltimaAtualizacao();
+	@Query("select max(dataAtualizacao) from FormaPagamento")
+	OffsetDateTime getDataUltimaAtualizacao();
 
-    @Query("select dataAtualizacao from FormaPagamento where id = :formaPagamentoId")
-    OffsetDateTime getDataAtualizacaoById(Long formaPagamentoId);
-}    
-      
+	@Query("select dataAtualizacao from FormaPagamento where id = :formaPagamentoId")
+	OffsetDateTime getDataAtualizacaoById(Long formaPagamentoId);
+}

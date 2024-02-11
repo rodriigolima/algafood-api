@@ -8,45 +8,50 @@ import java.util.UUID;
 
 public interface FotoStorageService {
 
-    FotoRecuperada recuperar(String nomeArquivo);
+	FotoRecuperada recuperar(String nomeArquivo);
 
-    void armazenar(NovaFoto novaFoto);
+	void armazenar(NovaFoto novaFoto);
 
-    void remover(String nomeArquivo);
+	void remover(String nomeArquivo);
 
-    default void substituir(String nomeArquivoAntigo, NovaFoto novaFoto) {
-        this.armazenar(novaFoto);
-        if (nomeArquivoAntigo != null) {
-            this.remover(nomeArquivoAntigo);
-        }
-    }
+	default void substituir(String nomeArquivoAntigo, NovaFoto novaFoto) {
 
-    default String gerarNomeArquivo(String nomeOriginal) {
-        return UUID.randomUUID() + "_" + nomeOriginal;
-    }
+		this.armazenar(novaFoto);
+		if (nomeArquivoAntigo != null) {
+			this.remover(nomeArquivoAntigo);
+		}
+	}
 
-    @Getter
-    @Builder
-    class NovaFoto {
-        private String nomeArquivo;
-        private String contentType;
-        private InputStream inputStream;
-    }
+	default String gerarNomeArquivo(String nomeOriginal) {
 
-    @Getter
-    @Builder
-    class FotoRecuperada {
+		return UUID.randomUUID() + "_" + nomeOriginal;
+	}
 
-        private InputStream inputStream;
-        private String url;
+	@Getter
+	@Builder
+	class NovaFoto {
 
-        public boolean temUrl() {
-            return url != null;
-        }
+		private String nomeArquivo;
+		private String contentType;
+		private InputStream inputStream;
+	}
 
-        public boolean temInputStream() {
-            return inputStream != null;
-        }
-    }
+	@Getter
+	@Builder
+	class FotoRecuperada {
+
+		private InputStream inputStream;
+		private String url;
+
+		public boolean temUrl() {
+
+			return url != null;
+		}
+
+		public boolean temInputStream() {
+
+			return inputStream != null;
+		}
+	}
 
 }

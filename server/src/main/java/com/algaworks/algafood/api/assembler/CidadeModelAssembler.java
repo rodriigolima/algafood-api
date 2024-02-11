@@ -1,48 +1,48 @@
 package com.algaworks.algafood.api.assembler;
 
-import com.algaworks.algafood.api.AlgaLinks;
-import com.algaworks.algafood.api.controller.CidadeController;
-import com.algaworks.algafood.api.model.CidadeDTO;
-import com.algaworks.algafood.domain.model.Cidade;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import com.algaworks.algafood.api.AlgaLinks;
+import com.algaworks.algafood.api.controller.CidadeController;
+import com.algaworks.algafood.api.model.CidadeDTO;
+import com.algaworks.algafood.domain.model.Cidade;
 
 @Component
-public class CidadeModelAssembler
-        extends RepresentationModelAssemblerSupport<Cidade, CidadeDTO> {
+public class CidadeModelAssembler extends RepresentationModelAssemblerSupport<Cidade, CidadeDTO> {
 
-    @Autowired
-    private ModelMapper modelMapper;
+	@Autowired
+	private ModelMapper modelMapper;
 
-    @Autowired
-    private AlgaLinks algaLinks;
+	@Autowired
+	private AlgaLinks algaLinks;
 
-    public CidadeModelAssembler() {
-        super(CidadeController.class, CidadeDTO.class);
-    }
+	public CidadeModelAssembler() {
 
-    @Override
-    public CidadeDTO toModel(Cidade cidade) {
-        CidadeDTO dto = createModelWithId(cidade.getId(), cidade);
+		super(CidadeController.class, CidadeDTO.class);
+	}
 
-        modelMapper.map(cidade, dto);
+	@Override
+	public CidadeDTO toModel(Cidade cidade) {
 
-        dto.add(algaLinks.linkToCidades("cidades"));
+		CidadeDTO dto = createModelWithId(cidade.getId(), cidade);
 
-        dto.getEstado().add(algaLinks.linkToEstado(dto.getEstado().getId()));
+		modelMapper.map(cidade, dto);
 
-        return dto;
-    }
+		dto.add(algaLinks.linkToCidades("cidades"));
 
-    @Override
-    public CollectionModel<CidadeDTO> toCollectionModel(Iterable<? extends Cidade> entities) {
-        return super.toCollectionModel(entities)
-                .add(algaLinks.linkToCidades());
-    }
+		dto.getEstado().add(algaLinks.linkToEstado(dto.getEstado().getId()));
+
+		return dto;
+	}
+
+	@Override
+	public CollectionModel<CidadeDTO> toCollectionModel(Iterable<? extends Cidade> entities) {
+
+		return super.toCollectionModel(entities).add(algaLinks.linkToCidades());
+	}
 
 }

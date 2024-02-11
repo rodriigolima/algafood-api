@@ -12,12 +12,12 @@ import java.math.BigDecimal;
 @Getter
 public class RestauranteBasicoDTO extends RepresentationModel<RestauranteBasicoDTO> {
 
-    private Long id;
+	private Long id;
 
-    private String nome;
+	private String nome;
 
-    private BigDecimal taxaFrete;
+	private BigDecimal taxaFrete;
 
-    private CozinhaDTO cozinha;
+	private CozinhaDTO cozinha;
 
 }

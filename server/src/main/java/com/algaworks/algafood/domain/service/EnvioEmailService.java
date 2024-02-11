@@ -10,22 +10,22 @@ import java.util.Set;
 
 public interface EnvioEmailService {
 
-     void enviar(Mensagem mensagem);
+	void enviar(Mensagem mensagem);
 
-     @Getter
-     @Builder
-     class Mensagem {
+	@Getter
+	@Builder
+	class Mensagem {
 
-         @Singular
-         private Set<String> destinatarios;
+		@Singular
+		private Set<String> destinatarios;
 
-         @NonNull
-         private String assunto;
+		@NonNull
+		private String assunto;
 
-         @NonNull
-         private String corpo;
+		@NonNull
+		private String corpo;
 
-         @Singular("variavel")
-         private Map<String, Object> variaveis;
-    }
+		@Singular("variavel")
+		private Map<String, Object> variaveis;
+	}
 }

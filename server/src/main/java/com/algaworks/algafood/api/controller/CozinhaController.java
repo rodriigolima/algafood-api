@@ -21,58 +21,60 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/v1/cozinhas")
 public class CozinhaController {
-    
 
-    @Autowired
-    private CozinhaRepository cozinhaRepository;
-    
-    @Autowired
-    private CadastroCozinhaService cadastroCozinha;
-    
-    @Autowired
-    private CozinhaInputDisassembler cozinhaInputDisassembler;
-    
-    @Autowired
-    protected CozinhaModelAssembler cozinhaModelAssembler;
+	@Autowired
+	private CozinhaRepository cozinhaRepository;
 
-    @Autowired
-    private PagedResourcesAssembler<Cozinha> pagedResourcesAssembler;
+	@Autowired
+	private CadastroCozinhaService cadastroCozinha;
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public PagedModel<CozinhaDTO> listar(@PageableDefault() Pageable pageable) {
-        Page<Cozinha> cozinhasPage = cozinhaRepository.findAll(pageable);
+	@Autowired
+	private CozinhaInputDisassembler cozinhaInputDisassembler;
 
-        return pagedResourcesAssembler
-                .toModel(cozinhasPage, cozinhaModelAssembler);
-    }
-    
-    
-    @GetMapping("/{cozinhaId}")
-    public CozinhaDTO buscar(@PathVariable Long cozinhaId) {
-        Cozinha cozinha = cadastroCozinha.buscarOuFalhar(cozinhaId);
-        return cozinhaModelAssembler.toModel(cozinha);
-    }
-    
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public CozinhaDTO adicionar(@RequestBody @Valid CozinhaInput cozinhaInput) {
-        Cozinha cozinha = cozinhaInputDisassembler.toDomainObject(cozinhaInput);
-        
-        return cozinhaModelAssembler.toModel(cadastroCozinha.salvar(cozinha));
-    }
-    
-    @PutMapping("/{cozinhaId}")
-    public CozinhaDTO atualizar(@PathVariable Long cozinhaId, @RequestBody @Valid CozinhaInput cozinhaInput) {
-        Cozinha cozinhaAtual =  cadastroCozinha.buscarOuFalhar(cozinhaId);
-        
-        cozinhaInputDisassembler.copyToDomainObject(cozinhaInput, cozinhaAtual);
-        
-        return cozinhaModelAssembler.toModel(cadastroCozinha.salvar(cozinhaAtual));
-    }
-    
-    @DeleteMapping("{cozinhaId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void remover(@PathVariable Long cozinhaId) {
-        cadastroCozinha.excluir(cozinhaId);
-    }
+	@Autowired
+	protected CozinhaModelAssembler cozinhaModelAssembler;
+
+	@Autowired
+	private PagedResourcesAssembler<Cozinha> pagedResourcesAssembler;
+
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	public PagedModel<CozinhaDTO> listar(@PageableDefault() Pageable pageable) {
+
+		Page<Cozinha> cozinhasPage = cozinhaRepository.findAll(pageable);
+
+		return pagedResourcesAssembler.toModel(cozinhasPage, cozinhaModelAssembler);
+	}
+
+	@GetMapping("/{cozinhaId}")
+	public CozinhaDTO buscar(@PathVariable Long cozinhaId) {
+
+		Cozinha cozinha = cadastroCozinha.buscarOuFalhar(cozinhaId);
+		return cozinhaModelAssembler.toModel(cozinha);
+	}
+
+	@PostMapping
+	@ResponseStatus(HttpStatus.CREATED)
+	public CozinhaDTO adicionar(@RequestBody @Valid CozinhaInput cozinhaInput) {
+
+		Cozinha cozinha = cozinhaInputDisassembler.toDomainObject(cozinhaInput);
+
+		return cozinhaModelAssembler.toModel(cadastroCozinha.salvar(cozinha));
+	}
+
+	@PutMapping("/{cozinhaId}")
+	public CozinhaDTO atualizar(@PathVariable Long cozinhaId, @RequestBody @Valid CozinhaInput cozinhaInput) {
+
+		Cozinha cozinhaAtual = cadastroCozinha.buscarOuFalhar(cozinhaId);
+
+		cozinhaInputDisassembler.copyToDomainObject(cozinhaInput, cozinhaAtual);
+
+		return cozinhaModelAssembler.toModel(cadastroCozinha.salvar(cozinhaAtual));
+	}
+
+	@DeleteMapping("{cozinhaId}")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void remover(@PathVariable Long cozinhaId) {
+
+		cadastroCozinha.excluir(cozinhaId);
+	}
 }

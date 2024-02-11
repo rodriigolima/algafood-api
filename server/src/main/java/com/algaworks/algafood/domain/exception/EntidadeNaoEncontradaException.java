@@ -2,7 +2,13 @@ package com.algaworks.algafood.domain.exception;
 
 public abstract class EntidadeNaoEncontradaException extends NegocioException {
     
-    protected EntidadeNaoEncontradaException(String mensagem) {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	protected EntidadeNaoEncontradaException(String mensagem) {
         super( mensagem);
     }
+	
 }

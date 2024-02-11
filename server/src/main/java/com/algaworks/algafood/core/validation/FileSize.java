@@ -19,11 +19,12 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Constraint(validatedBy = { FileSizeValidator.class })
 public @interface FileSize {
 
-    String message() default "tamanho do arquivo inválido";
+	String message() default "tamanho do arquivo inválido";
 
-    Class<?>[] groups() default { };
+	Class<?>[] groups() default {};
 
-    Class<? extends Payload>[] payload() default { };
+	Class<? extends Payload>[] payload() default {};
 
-    String max();
+	String max();
+	
 }

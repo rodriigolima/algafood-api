@@ -14,43 +14,45 @@ import java.util.Set;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Usuario {
 
-    @Id
-    @EqualsAndHashCode.Include
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@EqualsAndHashCode.Include
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @Column(nullable = false)
-    private String nome;
+	@Column(nullable = false)
+	private String nome;
 
-    @Column(nullable = false)
-    private String email;
+	@Column(nullable = false)
+	private String email;
 
-    @Column(nullable = false)
-    private String senha;
+	@Column(nullable = false)
+	private String senha;
 
-    @CreationTimestamp
-    @Column(nullable = false, columnDefinition = "datetime")
-    private OffsetDateTime dataCadastro;
+	@CreationTimestamp
+	@Column(nullable = false, columnDefinition = "datetime")
+	private OffsetDateTime dataCadastro;
 
-    @ManyToMany
-    @JoinTable(name = "usuario_grupo", joinColumns = @JoinColumn(name = "usuario_id"),
-        inverseJoinColumns = @JoinColumn(name = "grupo_id"))
-    private Set<Grupo> grupos = new HashSet<>();
+	@ManyToMany
+	@JoinTable(name = "usuario_grupo", joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "grupo_id"))
+	private Set<Grupo> grupos = new HashSet<>();
 
+	public boolean senhaCoincideCom(String senha) {
 
-    public boolean senhaCoincideCom(String senha) {
-        return getSenha().equals(senha);
-    }
+		return getSenha().equals(senha);
+	}
 
-    public boolean senhaNaoCoincideCom(String senha) {
-        return !senhaCoincideCom(senha);
-    }
+	public boolean senhaNaoCoincideCom(String senha) {
 
-    public void removerGrupo(Grupo grupo) {
-        getGrupos().remove(grupo);
-    }
+		return !senhaCoincideCom(senha);
+	}
 
-    public void adicionarGrupo(Grupo grupo) {
-        getGrupos().add(grupo);
-    }
+	public void removerGrupo(Grupo grupo) {
+
+		getGrupos().remove(grupo);
+	}
+
+	public void adicionarGrupo(Grupo grupo) {
+
+		getGrupos().add(grupo);
+	}
 }

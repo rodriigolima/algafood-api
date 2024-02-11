@@ -10,10 +10,10 @@ import org.springframework.hateoas.server.core.Relation;
 @Getter
 public class UsuarioDTO extends RepresentationModel<UsuarioDTO> {
 
-    private Long id;
+	private Long id;
 
-    private String nome;
+	private String nome;
 
-    private String email;
+	private String email;
 
 }

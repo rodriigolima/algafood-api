@@ -10,16 +10,16 @@ import java.math.BigDecimal;
 @Setter
 public class ItemPedidoDTO extends RepresentationModel<ItemPedidoDTO> {
 
-    private Long produtoId;
+	private Long produtoId;
 
-    private String produtoNome;
+	private String produtoNome;
 
-    private Integer quantidade;
+	private Integer quantidade;
 
-    private BigDecimal precoUnitario;
+	private BigDecimal precoUnitario;
 
-    private BigDecimal precoTotal;
+	private BigDecimal precoTotal;
 
-    private String observacao;
+	private String observacao;
 
 }

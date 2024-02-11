@@ -19,33 +19,27 @@ import java.util.List;
 @RequestMapping(path = "/estatisticas")
 public class EstatisticasController {
 
-    @Autowired
-    private VendaQueryService vendaQueryService;
+	@Autowired
+	private VendaQueryService vendaQueryService;
 
-    @Autowired
-    private VendaReportService vendaReportService;
+	@Autowired
+	private VendaReportService vendaReportService;
 
-    @GetMapping(path = "/vendas-diarias", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<VendaDiaria> consultarVendasDiarias(
-            VendaDiariaFilter filtro,
-            @RequestParam(required = false, defaultValue = "+00:00")String timeOffset) {
-        return vendaQueryService.consultarVendasDiarias(filtro, timeOffset);
-    }
+	@GetMapping(path = "/vendas-diarias", produces = MediaType.APPLICATION_JSON_VALUE)
+	public List<VendaDiaria> consultarVendasDiarias(VendaDiariaFilter filtro, @RequestParam(required = false, defaultValue = "+00:00") String timeOffset) {
 
-    @GetMapping(path = "/vendas-diarias", produces = MediaType.APPLICATION_PDF_VALUE)
-    public ResponseEntity<byte[]> consultarVendasDiariasPdf(
-            VendaDiariaFilter filtro,
-            @RequestParam(required = false, defaultValue = "+00:00")String timeOffset) {
+		return vendaQueryService.consultarVendasDiarias(filtro, timeOffset);
+	}
 
-        byte[] bytesPdf = vendaReportService.emitirVendasDiarias(filtro, timeOffset);
+	@GetMapping(path = "/vendas-diarias", produces = MediaType.APPLICATION_PDF_VALUE)
+	public ResponseEntity<byte[]> consultarVendasDiariasPdf(VendaDiariaFilter filtro, @RequestParam(required = false, defaultValue = "+00:00") String timeOffset) {
 
-        var headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=vendas-diarias.pdf");
+		byte[] bytesPdf = vendaReportService.emitirVendasDiarias(filtro, timeOffset);
 
-        return ResponseEntity.ok()
-                .contentType(MediaType.APPLICATION_PDF)
-                .headers(headers)
-                .body(bytesPdf);
-    }
+		var headers = new HttpHeaders();
+		headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=vendas-diarias.pdf");
+
+		return ResponseEntity.ok().contentType(MediaType.APPLICATION_PDF).headers(headers).body(bytesPdf);
+	}
 
 }

@@ -10,8 +10,8 @@ import org.springframework.hateoas.server.core.Relation;
 @Getter
 public class EstadoDTO extends RepresentationModel<EstadoDTO> {
 
-    private Long id;
+	private Long id;
 
-    private String nome;
+	private String nome;
 
 }

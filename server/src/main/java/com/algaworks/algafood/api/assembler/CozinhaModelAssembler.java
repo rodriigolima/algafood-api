@@ -1,40 +1,38 @@
 package com.algaworks.algafood.api.assembler;
 
-import com.algaworks.algafood.api.AlgaLinks;
-import com.algaworks.algafood.api.controller.CozinhaController;
-import com.algaworks.algafood.api.model.CozinhaDTO;
-import com.algaworks.algafood.api.model.RestauranteDTO;
-import com.algaworks.algafood.domain.model.Cozinha;
-import com.algaworks.algafood.domain.model.Restaurante;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import com.algaworks.algafood.api.AlgaLinks;
+import com.algaworks.algafood.api.controller.CozinhaController;
+import com.algaworks.algafood.api.model.CozinhaDTO;
+import com.algaworks.algafood.domain.model.Cozinha;
 
 @Component
-public class CozinhaModelAssembler
-        extends RepresentationModelAssemblerSupport<Cozinha, CozinhaDTO> {
+public class CozinhaModelAssembler extends RepresentationModelAssemblerSupport<Cozinha, CozinhaDTO> {
 
-    @Autowired
-    private ModelMapper modelMapper;
+	@Autowired
+	private ModelMapper modelMapper;
 
-    @Autowired
-    private AlgaLinks algaLinks;
+	@Autowired
+	private AlgaLinks algaLinks;
 
-    public CozinhaModelAssembler() {
-        super(CozinhaController.class, CozinhaDTO.class);
-    }
+	public CozinhaModelAssembler() {
 
-    @Override
-    public CozinhaDTO toModel(Cozinha cozinha) {
-        CozinhaDTO dto = createModelWithId(cozinha.getId(), cozinha);
-        modelMapper.map(cozinha, dto);
+		super(CozinhaController.class, CozinhaDTO.class);
+	}
 
-        dto.add(algaLinks.linkToCozinhas("cozinhas"));
+	@Override
+	public CozinhaDTO toModel(Cozinha cozinha) {
 
-        return dto;
-    }
+		CozinhaDTO dto = createModelWithId(cozinha.getId(), cozinha);
+		modelMapper.map(cozinha, dto);
+
+		dto.add(algaLinks.linkToCozinhas("cozinhas"));
+
+		return dto;
+	}
 
 }

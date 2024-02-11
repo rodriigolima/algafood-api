@@ -13,31 +13,32 @@ import java.util.List;
 @RestController
 @RequestMapping("/grupos/{grupoId}/permissoes")
 public class GrupoPermissaoController {
-    
-  
-    @Autowired
-    private CadastroGrupoService cadastroGrupo;
-    
-    @Autowired
-    private PermissaoModelAssembler permissaoModelAssembler;
-    
-    
-    @GetMapping
-    public List<PermissaoDTO> listar(@PathVariable Long grupoId) {
-        Grupo grupo = cadastroGrupo.buscarOuFalhar(grupoId);
-        
-        return permissaoModelAssembler.toCollectionModel(grupo.getPermissoes());
-    }
 
-    @DeleteMapping("/{permissaoId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void desassociar(@PathVariable Long grupoId, @PathVariable Long permissaoId){
-        cadastroGrupo.desassociarPermissao(grupoId, permissaoId);
-    }
+	@Autowired
+	private CadastroGrupoService cadastroGrupo;
 
-    @PutMapping("/{permissaoId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void associar(@PathVariable Long grupoId, @PathVariable Long permissaoId){
-        cadastroGrupo.associarPermissao(grupoId, permissaoId);
-    }
+	@Autowired
+	private PermissaoModelAssembler permissaoModelAssembler;
+
+	@GetMapping
+	public List<PermissaoDTO> listar(@PathVariable Long grupoId) {
+
+		Grupo grupo = cadastroGrupo.buscarOuFalhar(grupoId);
+
+		return permissaoModelAssembler.toCollectionModel(grupo.getPermissoes());
+	}
+
+	@DeleteMapping("/{permissaoId}")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void desassociar(@PathVariable Long grupoId, @PathVariable Long permissaoId) {
+
+		cadastroGrupo.desassociarPermissao(grupoId, permissaoId);
+	}
+
+	@PutMapping("/{permissaoId}")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void associar(@PathVariable Long grupoId, @PathVariable Long permissaoId) {
+
+		cadastroGrupo.associarPermissao(grupoId, permissaoId);
+	}
 }

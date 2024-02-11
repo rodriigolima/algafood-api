@@ -6,19 +6,21 @@ import org.springframework.data.domain.Pageable;
 
 public class PageWrapper<T> extends PageImpl<T> {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    private final Pageable pageable;
+	private final Pageable pageable;
 
-    public PageWrapper(Page<T> page, Pageable pageable) {
-        super(page.getContent(), pageable, page.getTotalElements());
+	public PageWrapper(Page<T> page, Pageable pageable) {
 
-        this.pageable = pageable;
-    }
+		super(page.getContent(), pageable, page.getTotalElements());
 
-    @Override
-    public Pageable getPageable() {
-        return this.pageable;
-    }
+		this.pageable = pageable;
+	}
+
+	@Override
+	public Pageable getPageable() {
+
+		return this.pageable;
+	}
 
 }

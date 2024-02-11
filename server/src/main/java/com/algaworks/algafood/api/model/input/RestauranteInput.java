@@ -9,21 +9,23 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 
-@Setter@Getter
+@Setter
+@Getter
 public class RestauranteInput {
-    @NotBlank
-    private String nome;
 
-    @TaxaFrete
-    @NotNull
-    private BigDecimal taxaFrete;
+	@NotBlank
+	private String nome;
 
-    @Valid
-    @NotNull
-    private CozinhaIdInput cozinha;
-    
-    @Valid
-    @NotNull
-    private EnderecoInput endereco;
-    
+	@TaxaFrete
+	@NotNull
+	private BigDecimal taxaFrete;
+
+	@Valid
+	@NotNull
+	private CozinhaIdInput cozinha;
+
+	@Valid
+	@NotNull
+	private EnderecoInput endereco;
+
 }

@@ -10,56 +10,49 @@ import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSuppor
 import org.springframework.stereotype.Component;
 
 @Component
-public class PedidoModelAssembler
-        extends RepresentationModelAssemblerSupport<Pedido, PedidoDTO> {
+public class PedidoModelAssembler extends RepresentationModelAssemblerSupport<Pedido, PedidoDTO> {
 
-    @Autowired
-    private ModelMapper modelMapper;
+	@Autowired
+	private ModelMapper modelMapper;
 
-    @Autowired
-    private AlgaLinks algaLinks;
+	@Autowired
+	private AlgaLinks algaLinks;
 
-    public PedidoModelAssembler() {
-        super(PedidoController.class, PedidoDTO.class);
-    }
+	public PedidoModelAssembler() {
 
-    @Override
-    public PedidoDTO toModel(Pedido pedido) {
-        PedidoDTO dto = createModelWithId(pedido.getCodigo(), pedido);
-        modelMapper.map(pedido, dto);
+		super(PedidoController.class, PedidoDTO.class);
+	}
 
-        dto.add(algaLinks.linkToPedidos());
+	@Override
+	public PedidoDTO toModel(Pedido pedido) {
 
-        if (pedido.isConfirmado())
-            dto.add(algaLinks.linkToConfirmacaoPedido(pedido.getCodigo(), "confirmar"));
+		PedidoDTO dto = createModelWithId(pedido.getCodigo(), pedido);
+		modelMapper.map(pedido, dto);
 
+		dto.add(algaLinks.linkToPedidos());
 
-        if (pedido.isCancelado())
-            dto.add(algaLinks.linkToCancelamentoPedido(pedido.getCodigo(), "cancelar"));
+		if (pedido.isConfirmado())
+			dto.add(algaLinks.linkToConfirmacaoPedido(pedido.getCodigo(), "confirmar"));
 
+		if (pedido.isCancelado())
+			dto.add(algaLinks.linkToCancelamentoPedido(pedido.getCodigo(), "cancelar"));
 
-        if (pedido.isEntregue())
-            dto.add(algaLinks.linkToEntregaPedido(pedido.getCodigo(), "entregar"));
+		if (pedido.isEntregue())
+			dto.add(algaLinks.linkToEntregaPedido(pedido.getCodigo(), "entregar"));
 
+		dto.getRestaurante().add(algaLinks.linkToRestaurante(pedido.getRestaurante().getId()));
 
-        dto.getRestaurante().add(
-                algaLinks.linkToRestaurante(pedido.getRestaurante().getId()));
+		dto.getCliente().add(algaLinks.linkToUsuario(pedido.getCliente().getId()));
 
-        dto.getCliente().add(
-                algaLinks.linkToUsuario(pedido.getCliente().getId()));
+		dto.getFormaPagamento().add(algaLinks.linkToFormaPagamento(pedido.getFormaPagamento().getId()));
 
-        dto.getFormaPagamento().add(
-                algaLinks.linkToFormaPagamento(pedido.getFormaPagamento().getId()));
+		dto.getEnderecoEntrega().getCidade().add(algaLinks.linkToCidade(pedido.getEnderecoEntrega().getCidade().getId()));
 
-        dto.getEnderecoEntrega().getCidade().add(
-                algaLinks.linkToCidade(pedido.getEnderecoEntrega().getCidade().getId()));
+		dto.getItens().forEach(item -> {
+			item.add(algaLinks.linkToProduto(dto.getRestaurante().getId(), item.getProdutoId(), "produto"));
+		});
 
-        dto.getItens().forEach(item -> {
-            item.add(algaLinks.linkToProduto(
-                    dto.getRestaurante().getId(), item.getProdutoId(), "produto"));
-        });
-
-        return dto;
-    }
+		return dto;
+	}
 
 }

@@ -2,7 +2,12 @@ package com.algaworks.algafood.domain.exception;
 
 public class PermissaoNaoEncontradaException extends EntidadeNaoEncontradaException {
     
-    public PermissaoNaoEncontradaException(String mensagem) {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public PermissaoNaoEncontradaException(String mensagem) {
         super(mensagem);
     }
 

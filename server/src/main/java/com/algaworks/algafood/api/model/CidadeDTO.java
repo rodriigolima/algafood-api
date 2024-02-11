@@ -10,10 +10,10 @@ import org.springframework.hateoas.server.core.Relation;
 @Getter
 public class CidadeDTO extends RepresentationModel<CidadeDTO> {
 
-    private Long id;
+	private Long id;
 
-    private String nome;
+	private String nome;
 
-    private EstadoDTO estado;
+	private EstadoDTO estado;
 
 }

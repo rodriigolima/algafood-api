@@ -10,47 +10,49 @@ import java.nio.file.Path;
 
 public class LocalFotoStorageService implements FotoStorageService {
 
-    @Autowired
-    private StorageProperties storageProperties;
+	@Autowired
+	private StorageProperties storageProperties;
 
+	@Override
+	public FotoRecuperada recuperar(String nomeArquivo) {
 
-    @Override
-    public FotoRecuperada recuperar(String nomeArquivo) {
-        Path arquivoPath = getArquivoPath(nomeArquivo);
+		Path arquivoPath = getArquivoPath(nomeArquivo);
 
-        try {
+		try {
 
-            return FotoRecuperada.builder()
-                    .inputStream(Files.newInputStream(arquivoPath)).build();
-        } catch (Exception ex) {
-            throw new StorageException("Não foi possível recuperar arquivo", ex);
-        }
-    }
+			return FotoRecuperada.builder().inputStream(Files.newInputStream(arquivoPath)).build();
+		} catch (Exception ex) {
+			throw new StorageException("Não foi possível recuperar arquivo", ex);
+		}
+	}
 
-    @Override
-    public void armazenar(NovaFoto novaFoto) {
-        Path arquivoPath = getArquivoPath(novaFoto.getNomeArquivo());
+	@Override
+	public void armazenar(NovaFoto novaFoto) {
 
-        try {
-            FileCopyUtils.copy(novaFoto.getInputStream(), Files.newOutputStream(arquivoPath));
-        } catch (Exception ex) {
-            throw new StorageException("Não foi possível armazenar arquivo", ex);
-        }
-    }
+		Path arquivoPath = getArquivoPath(novaFoto.getNomeArquivo());
 
-    @Override
-    public void remover(String nomeArquivo) {
-        Path arquivoPath = getArquivoPath(nomeArquivo);
+		try {
+			FileCopyUtils.copy(novaFoto.getInputStream(), Files.newOutputStream(arquivoPath));
+		} catch (Exception ex) {
+			throw new StorageException("Não foi possível armazenar arquivo", ex);
+		}
+	}
 
-        try {
-            Files.deleteIfExists(arquivoPath);
-        } catch (Exception ex) {
-            throw new StorageException("Não foi possível excluir arquivo. ",ex);
-        }
-    }
+	@Override
+	public void remover(String nomeArquivo) {
 
-    private Path getArquivoPath(String nomeArquivo) {
-        return storageProperties.getLocal().getDiretorioFotos().resolve(Path.of(nomeArquivo));
-    }
+		Path arquivoPath = getArquivoPath(nomeArquivo);
+
+		try {
+			Files.deleteIfExists(arquivoPath);
+		} catch (Exception ex) {
+			throw new StorageException("Não foi possível excluir arquivo. ", ex);
+		}
+	}
+
+	private Path getArquivoPath(String nomeArquivo) {
+
+		return storageProperties.getLocal().getDiretorioFotos().resolve(Path.of(nomeArquivo));
+	}
 
 }

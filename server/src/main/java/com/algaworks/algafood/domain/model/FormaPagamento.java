@@ -12,14 +12,14 @@ import java.time.OffsetDateTime;
 @Entity
 public class FormaPagamento {
 
-    @Id
-    @EqualsAndHashCode.Include
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@EqualsAndHashCode.Include
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @Column(nullable = false)
-    private String descricao;
+	@Column(nullable = false)
+	private String descricao;
 
-    @UpdateTimestamp
-    private OffsetDateTime dataAtualizacao;
+	@UpdateTimestamp
+	private OffsetDateTime dataAtualizacao;
 }
