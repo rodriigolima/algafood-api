@@ -1,27 +1,40 @@
 package com.algaworks.algafood.api.assembler;
 
-import com.algaworks.algafood.api.model.ProdutoDTO;
-import com.algaworks.algafood.domain.model.Produto;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
-import java.util.Collection;
-import java.util.List;
+import com.algaworks.algafood.api.AlgaLinks;
+import com.algaworks.algafood.api.controller.RestauranteProdutoController;
+import com.algaworks.algafood.api.model.ProdutoDTO;
+import com.algaworks.algafood.domain.model.Produto;
 
 @Component
-public class ProdutoModelAssembler {
+public class ProdutoModelAssembler extends RepresentationModelAssemblerSupport<Produto, ProdutoDTO> {
 
 	@Autowired
 	private ModelMapper modelMapper;
 
-	public ProdutoDTO toModel(Produto produto) {
+	@Autowired
+	private AlgaLinks algaLinks;
 
-		return modelMapper.map(produto, ProdutoDTO.class);
+	public ProdutoModelAssembler() {
+
+		super(RestauranteProdutoController.class, ProdutoDTO.class);
 	}
 
-	public List<ProdutoDTO> toCollectionModel(Collection<Produto> produtos) {
+	@Override
+	public ProdutoDTO toModel(Produto produto) {
 
-		return produtos.stream().map(this::toModel).toList();
+		ProdutoDTO dto = createModelWithId(produto.getId(), produto, produto.getRestaurante().getId());
+
+		modelMapper.map(produto, dto);
+
+		dto.add(algaLinks.linkToProdutos(produto.getRestaurante().getId(), "produtos"));
+
+		dto.add(algaLinks.linkToFotoProduto(produto.getRestaurante().getId(), produto.getId(), "foto"));
+
+		return dto;
 	}
 }
