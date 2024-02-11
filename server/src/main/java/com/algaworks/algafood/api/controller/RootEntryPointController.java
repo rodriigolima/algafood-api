@@ -30,6 +30,7 @@ public class RootEntryPointController {
 		dto.add(algaLinks.linkToFormasPagamento("formas-pagamento"));
 		dto.add(algaLinks.linkToEstados("estados"));
 		dto.add(algaLinks.linkToCidades("cidades"));
+		dto.add(algaLinks.linkToEstatisticas("estatisticas"));
 
 		return dto;
 	}

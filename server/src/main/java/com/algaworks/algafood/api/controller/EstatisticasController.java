@@ -1,10 +1,9 @@
 package com.algaworks.algafood.api.controller;
 
-import com.algaworks.algafood.domain.filter.VendaDiariaFilter;
-import com.algaworks.algafood.domain.model.dto.VendaDiaria;
-import com.algaworks.algafood.domain.service.VendaQueryService;
-import com.algaworks.algafood.domain.service.VendaReportService;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.RepresentationModel;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import com.algaworks.algafood.api.AlgaLinks;
+import com.algaworks.algafood.domain.filter.VendaDiariaFilter;
+import com.algaworks.algafood.domain.model.dto.VendaDiaria;
+import com.algaworks.algafood.domain.service.VendaQueryService;
+import com.algaworks.algafood.domain.service.VendaReportService;
 
 @RestController
 @RequestMapping(path = "/estatisticas")
@@ -24,6 +27,9 @@ public class EstatisticasController {
 
 	@Autowired
 	private VendaReportService vendaReportService;
+
+	@Autowired
+	private AlgaLinks algaLinks;
 
 	@GetMapping(path = "/vendas-diarias", produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<VendaDiaria> consultarVendasDiarias(VendaDiariaFilter filtro, @RequestParam(required = false, defaultValue = "+00:00") String timeOffset) {
@@ -40,6 +46,19 @@ public class EstatisticasController {
 		headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=vendas-diarias.pdf");
 
 		return ResponseEntity.ok().contentType(MediaType.APPLICATION_PDF).headers(headers).body(bytesPdf);
+	}
+
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	public EstatisticasDTO estatisticas() {
+
+		EstatisticasDTO dto = new EstatisticasDTO();
+
+		dto.add(algaLinks.linkToEstatisticasVendasDiarias("vendas-diarias"));
+
+		return dto;
+	}
+
+	public static class EstatisticasDTO extends RepresentationModel<EstatisticasDTO> {
 	}
 
 }
