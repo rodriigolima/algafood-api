@@ -1,8 +1,8 @@
-package com.algaworks.algafood.api.controller;
+package com.algaworks.algafood.api.v1.controller;
 
-import com.algaworks.algafood.api.assembler.FotoProdutoModelAssembler;
-import com.algaworks.algafood.api.model.FotoProdutoDTO;
-import com.algaworks.algafood.api.model.input.FotoProdutoInput;
+import com.algaworks.algafood.api.v1.assembler.FotoProdutoModelAssembler;
+import com.algaworks.algafood.api.v1.model.FotoProdutoDTO;
+import com.algaworks.algafood.api.v1.model.input.FotoProdutoInput;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.model.FotoProduto;
 import com.algaworks.algafood.domain.model.Produto;

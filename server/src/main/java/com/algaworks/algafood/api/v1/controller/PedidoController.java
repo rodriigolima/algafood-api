@@ -1,11 +1,11 @@
-package com.algaworks.algafood.api.controller;
+package com.algaworks.algafood.api.v1.controller;
 
-import com.algaworks.algafood.api.assembler.PedidoInputDisassembler;
-import com.algaworks.algafood.api.assembler.PedidoModelAssembler;
-import com.algaworks.algafood.api.assembler.PedidoResumoModelAssembler;
-import com.algaworks.algafood.api.model.PedidoDTO;
-import com.algaworks.algafood.api.model.PedidoResumoDTO;
-import com.algaworks.algafood.api.model.input.PedidoInput;
+import com.algaworks.algafood.api.v1.assembler.PedidoInputDisassembler;
+import com.algaworks.algafood.api.v1.assembler.PedidoModelAssembler;
+import com.algaworks.algafood.api.v1.assembler.PedidoResumoModelAssembler;
+import com.algaworks.algafood.api.v1.model.PedidoDTO;
+import com.algaworks.algafood.api.v1.model.PedidoResumoDTO;
+import com.algaworks.algafood.api.v1.model.input.PedidoInput;
 import com.algaworks.algafood.core.data.PageWrapper;
 import com.algaworks.algafood.core.data.PageableTranslator;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;

@@ -1,4 +1,4 @@
-package com.algaworks.algafood.api.v1.model;
+package com.algaworks.algafood.api.v2.model;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -8,12 +8,13 @@ import org.springframework.hateoas.server.core.Relation;
 @Relation(collectionRelation = "cidades")
 @Setter
 @Getter
-public class CidadeDTO extends RepresentationModel<CidadeDTO> {
+public class CidadeDTOV2 extends RepresentationModel<CidadeDTOV2> {
 
-	private Long id;
+	private Long idCidade;
 
-	private String nome;
+	private String nomeCidade;
 
-	private EstadoDTO estado;
+	private Long idEstado;
 
+	private String nomeEstado;
 }

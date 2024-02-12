@@ -1,6 +1,5 @@
-package com.algaworks.algafood.api.v1.model.input;
+package com.algaworks.algafood.api.v2.model.input;
 
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -8,13 +7,11 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class CidadeInput {
+public class CidadeInputV2 {
 
 	@NotBlank
-	private String nome;
+	private String nomeCidade;
 
-	@Valid
 	@NotNull
-	private EstadoIdInput estado;
-
+	private Long idEstado;
 }

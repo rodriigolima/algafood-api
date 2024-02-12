@@ -1,8 +1,8 @@
-package com.algaworks.algafood.api.assembler;
+package com.algaworks.algafood.api.v1.assembler;
 
-import com.algaworks.algafood.api.AlgaLinks;
-import com.algaworks.algafood.api.controller.RestauranteController;
-import com.algaworks.algafood.api.model.RestauranteBasicoDTO;
+import com.algaworks.algafood.api.v1.AlgaLinks;
+import com.algaworks.algafood.api.v1.controller.RestauranteController;
+import com.algaworks.algafood.api.v1.model.RestauranteBasicoDTO;
 import com.algaworks.algafood.domain.model.Restaurante;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

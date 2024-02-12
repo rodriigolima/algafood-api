@@ -1,13 +1,13 @@
-package com.algaworks.algafood.api.assembler;
+package com.algaworks.algafood.api.v1.assembler;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
-import com.algaworks.algafood.api.AlgaLinks;
-import com.algaworks.algafood.api.controller.RestauranteProdutoController;
-import com.algaworks.algafood.api.model.ProdutoDTO;
+import com.algaworks.algafood.api.v1.AlgaLinks;
+import com.algaworks.algafood.api.v1.controller.RestauranteProdutoController;
+import com.algaworks.algafood.api.v1.model.ProdutoDTO;
 import com.algaworks.algafood.domain.model.Produto;
 
 @Component

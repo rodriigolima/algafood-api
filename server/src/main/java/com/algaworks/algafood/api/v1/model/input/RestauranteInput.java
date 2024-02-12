@@ -1,4 +1,4 @@
-package com.algaworks.algafood.api.model.input;
+package com.algaworks.algafood.api.v1.model.input;
 
 import com.algaworks.algafood.core.validation.TaxaFrete;
 import jakarta.validation.Valid;

@@ -1,9 +1,9 @@
-package com.algaworks.algafood.api.controller;
+package com.algaworks.algafood.api.v1.controller;
 
-import com.algaworks.algafood.api.assembler.EstadoInputDisassembler;
-import com.algaworks.algafood.api.assembler.EstadoModelAssembler;
-import com.algaworks.algafood.api.model.EstadoDTO;
-import com.algaworks.algafood.api.model.input.EstadoInput;
+import com.algaworks.algafood.api.v1.assembler.EstadoInputDisassembler;
+import com.algaworks.algafood.api.v1.assembler.EstadoModelAssembler;
+import com.algaworks.algafood.api.v1.model.EstadoDTO;
+import com.algaworks.algafood.api.v1.model.input.EstadoInput;
 import com.algaworks.algafood.domain.model.Estado;
 import com.algaworks.algafood.domain.repository.EstadoRepository;
 import com.algaworks.algafood.domain.service.CadastroEstadoService;
