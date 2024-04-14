@@ -1,11 +1,13 @@
 package com.algaworks.algafood.core.validation;
 
-import jakarta.validation.ConstraintValidator;
-import jakarta.validation.ConstraintValidatorContext;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Arrays;
 import java.util.List;
+
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
+
+import org.springframework.web.multipart.MultipartFile;
 
 public class FileCotentTypeValidator implements ConstraintValidator<FileContentType, MultipartFile> {
 

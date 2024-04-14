@@ -1,5 +1,7 @@
 package com.algaworks.algafood.api.v1.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
@@ -21,10 +23,8 @@ import com.algaworks.algafood.domain.model.Grupo;
 import com.algaworks.algafood.domain.repository.GrupoRepository;
 import com.algaworks.algafood.domain.service.CadastroGrupoService;
 
-import jakarta.validation.Valid;
-
 @RestController
-@RequestMapping("/grupos")
+@RequestMapping("/v1/grupos")
 public class GrupoController {
 
 	@Autowired

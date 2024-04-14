@@ -1,7 +1,8 @@
 package com.algaworks.algafood.core.validation;
 
-import jakarta.validation.ConstraintValidator;
-import jakarta.validation.ConstraintValidatorContext;
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
+
 import org.springframework.util.unit.DataSize;
 import org.springframework.web.multipart.MultipartFile;
 

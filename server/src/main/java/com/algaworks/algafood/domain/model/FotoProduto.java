@@ -1,6 +1,12 @@
 package com.algaworks.algafood.domain.model;
 
-import jakarta.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.MapsId;
+import javax.persistence.OneToOne;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
