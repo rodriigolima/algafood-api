@@ -23,8 +23,7 @@
 		<modelmapper.version>3.0.0</modelmapper.version>
 		<jasperreports.version>6.20.5</jasperreports.version>
 		<aws-java-sdk-s3.version>1.12.501</aws-java-sdk-s3.version>
-		<springdoc.version>2.3.0</springdoc.version>
-		<springdoc-hateoas.version>1.7.0</springdoc-hateoas.version>
+		<springdoc.version>1.6.9</springdoc.version>
 		<logback-ext-loggly.version>0.1.5</logback-ext-loggly.version>
 		<springauthserver.version>0.3.1</springauthserver.version>
 	</properties>
@@ -142,20 +141,20 @@
 
 		<dependency>
 			<groupId>org.springdoc</groupId>
-			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<artifactId>springdoc-openapi-ui</artifactId>
 			<version>${springdoc.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-hateoas</artifactId>
-			<version>${springdoc-hateoas.version}</version>
+			<version>${springdoc.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-security</artifactId>
-			<version>${springdoc-hateoas.version}</version>
+			<version>${springdoc.version}</version>
 		</dependency>
 
 		<dependency>

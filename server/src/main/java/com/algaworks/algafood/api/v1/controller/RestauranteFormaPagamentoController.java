@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.algaworks.algafood.api.v1.AlgaLinks;
 import com.algaworks.algafood.api.v1.assembler.FormaPagamentoModelAssembler;
 import com.algaworks.algafood.api.v1.model.FormaPagamentoDTO;
+import com.algaworks.algafood.core.security.AlgaSecurity;
+import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.service.CadastroRestauranteService;
 
@@ -31,23 +33,31 @@ public class RestauranteFormaPagamentoController {
 	@Autowired
 	private AlgaLinks algaLinks;
 
+	@Autowired
+	private AlgaSecurity security;
+
+	@CheckSecurity.Restaurantes.PodeConsultar
 	@GetMapping
 	public CollectionModel<FormaPagamentoDTO> listar(@PathVariable Long restauranteId) {
 
 		Restaurante restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
 
-		CollectionModel<FormaPagamentoDTO> dtos = formaPagamentoModelAssembler.toCollectionModel(restaurante.getFormasPagamento())
-				.removeLinks()
-				.add(algaLinks.linkToRestauranteFormasPagamento(restauranteId))
-				.add(algaLinks.linkToRestauranteFormaPagamentoAssociacao(restauranteId, "associar"));
+		CollectionModel<FormaPagamentoDTO> dtos = formaPagamentoModelAssembler.toCollectionModel(restaurante.getFormasPagamento()).removeLinks();
 
-		dtos.getContent().forEach(dto -> {
-			dto.add(algaLinks.linkToRestauranteFormaPagamentoDesassociacao(restauranteId, dto.getId(), "desassociar"));
-		});
+		dtos.add(algaLinks.linkToRestauranteFormasPagamento(restauranteId));
 
+		if (this.security.podeGerenciarFuncionamentoRestaurantes(restauranteId)) {
+			dtos.add(algaLinks.linkToRestauranteFormaPagamentoAssociacao(restauranteId, "associar"));
+
+			dtos.getContent().forEach(formaPagamentoModel -> {
+				formaPagamentoModel
+						.add(algaLinks.linkToRestauranteFormaPagamentoDesassociacao(restauranteId, formaPagamentoModel.getId(), "desassociar"));
+			});
+		}
 		return dtos;
 	}
 
+	@CheckSecurity.Restaurantes.PodeGerenciarFuncionamento
 	@DeleteMapping("/{formaPagamentoId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseEntity<Void> desassociar(@PathVariable Long restauranteId, @PathVariable Long formaPagamentoId) {
@@ -57,6 +67,7 @@ public class RestauranteFormaPagamentoController {
 		return ResponseEntity.noContent().build();
 	}
 
+	@CheckSecurity.Restaurantes.PodeGerenciarFuncionamento
 	@PutMapping("/{formaPagamentoId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseEntity<Void> associar(@PathVariable Long restauranteId, @PathVariable Long formaPagamentoId) {

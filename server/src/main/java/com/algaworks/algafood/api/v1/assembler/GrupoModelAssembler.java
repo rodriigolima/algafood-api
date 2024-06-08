@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import com.algaworks.algafood.api.v1.AlgaLinks;
 import com.algaworks.algafood.api.v1.controller.GrupoController;
 import com.algaworks.algafood.api.v1.model.GrupoDTO;
+import com.algaworks.algafood.core.security.AlgaSecurity;
 import com.algaworks.algafood.domain.model.Grupo;
 
 @Component
@@ -20,6 +21,9 @@ public class GrupoModelAssembler extends RepresentationModelAssemblerSupport<Gru
 	@Autowired
 	private AlgaLinks algaLinks;
 
+	@Autowired
+	private AlgaSecurity security;
+
 	public GrupoModelAssembler() {
 
 		super(GrupoController.class, GrupoDTO.class);
@@ -28,19 +32,26 @@ public class GrupoModelAssembler extends RepresentationModelAssemblerSupport<Gru
 	@Override
 	public GrupoDTO toModel(Grupo grupo) {
 
-		GrupoDTO GrupoDTO = createModelWithId(grupo.getId(), grupo);
-		modelMapper.map(grupo, GrupoDTO);
+		GrupoDTO dto = createModelWithId(grupo.getId(), grupo);
+		modelMapper.map(grupo, dto);
 
-		GrupoDTO.add(algaLinks.linkToGrupos("grupos"));
+		if (this.security.podeConsultarUsuariosGruposPermissoes()) {
+			dto.add(algaLinks.linkToGrupos("grupos"));
 
-		GrupoDTO.add(algaLinks.linkToGrupoPermissoes(grupo.getId(), "permissoes"));
+			dto.add(algaLinks.linkToGrupoPermissoes(grupo.getId(), "permissoes"));
+		}
 
-		return GrupoDTO;
+		return dto;
 	}
 
 	@Override
 	public CollectionModel<GrupoDTO> toCollectionModel(Iterable<? extends Grupo> entities) {
 
-		return super.toCollectionModel(entities).add(algaLinks.linkToGrupos());
+		CollectionModel<GrupoDTO> dto = super.toCollectionModel(entities);
+
+		if (this.security.podeConsultarUsuariosGruposPermissoes())
+			dto.add(algaLinks.linkToGrupos());
+
+		return dto;
 	}
 }

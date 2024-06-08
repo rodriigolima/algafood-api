@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import com.algaworks.algafood.api.v1.AlgaLinks;
 import com.algaworks.algafood.api.v1.controller.FormaPagamentoController;
 import com.algaworks.algafood.api.v1.model.FormaPagamentoDTO;
+import com.algaworks.algafood.core.security.AlgaSecurity;
 import com.algaworks.algafood.domain.model.FormaPagamento;
 
 @Component
@@ -20,6 +21,9 @@ public class FormaPagamentoModelAssembler extends RepresentationModelAssemblerSu
 	@Autowired
 	private AlgaLinks algaLinks;
 
+	@Autowired
+	private AlgaSecurity security;
+
 	public FormaPagamentoModelAssembler() {
 
 		super(FormaPagamentoController.class, FormaPagamentoDTO.class);
@@ -28,18 +32,24 @@ public class FormaPagamentoModelAssembler extends RepresentationModelAssemblerSu
 	@Override
 	public FormaPagamentoDTO toModel(FormaPagamento formaPagamento) {
 
-		FormaPagamentoDTO FormaPagamentoDTO = createModelWithId(formaPagamento.getId(), formaPagamento);
+		FormaPagamentoDTO dto = createModelWithId(formaPagamento.getId(), formaPagamento);
 
-		modelMapper.map(formaPagamento, FormaPagamentoDTO);
+		modelMapper.map(formaPagamento, dto);
 
-		FormaPagamentoDTO.add(algaLinks.linkToFormasPagamento("formasPagamento"));
+		if (this.security.podeConsultarFormasPagamento())
+			dto.add(algaLinks.linkToFormasPagamento("formasPagamento"));
 
-		return FormaPagamentoDTO;
+		return dto;
 	}
 
 	@Override
 	public CollectionModel<FormaPagamentoDTO> toCollectionModel(Iterable<? extends FormaPagamento> entities) {
 
-		return super.toCollectionModel(entities).add(algaLinks.linkToFormasPagamento());
+		CollectionModel<FormaPagamentoDTO> dto = super.toCollectionModel(entities);
+
+		if (this.security.podeConsultarFormasPagamento())
+			dto.add(algaLinks.linkToFormasPagamento());
+
+		return dto;
 	}
 }

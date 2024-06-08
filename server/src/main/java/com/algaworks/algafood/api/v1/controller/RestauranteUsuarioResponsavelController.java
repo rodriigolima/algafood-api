@@ -12,8 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.algaworks.algafood.api.v1.AlgaLinks;
 import com.algaworks.algafood.api.v1.assembler.UsuarioModelAssembler;
 import com.algaworks.algafood.api.v1.model.UsuarioDTO;
+import com.algaworks.algafood.core.security.AlgaSecurity;
+import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.service.CadastroRestauranteService;
 
@@ -26,15 +29,38 @@ public class RestauranteUsuarioResponsavelController {
 
 	@Autowired
 	private UsuarioModelAssembler usuarioModelAssembler;
+	
+	@Autowired
+	private AlgaLinks algaLinks;
+	
+	@Autowired
+	private AlgaSecurity security;   
 
+	@CheckSecurity.Restaurantes.PodeGerenciarCadastro
 	@GetMapping
 	public CollectionModel<UsuarioDTO> listar(@PathVariable Long restauranteId) {
 
 		Restaurante restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
+		
+		CollectionModel<UsuarioDTO> dtos = usuarioModelAssembler
+				.toCollectionModel(restaurante.getResponsaveis())
+				.removeLinks();
 
-		return usuarioModelAssembler.toCollectionModel(restaurante.getResponsaveis());
+		dtos.add(this.algaLinks.linkToRestauranteResponsaveis(restauranteId));
+		
+		if (this.security.podeGerenciarCadastroRestaurantes()) {
+			dtos.add(algaLinks.linkToRestauranteResponsavelAssociacao(restauranteId, "associar"));
+	
+			dtos.getContent().stream().forEach(usuarioModel -> {
+				usuarioModel.add(algaLinks.linkToRestauranteResponsavelDesassociacao(
+						restauranteId, usuarioModel.getId(), "desassociar"));
+			});
+		}
+		
+		return dtos;
 	}
 
+	@CheckSecurity.Restaurantes.PodeGerenciarCadastro
 	@DeleteMapping("/{usuarioId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseEntity<Void> desassociar(@PathVariable Long restauranteId, @PathVariable Long usuarioId) {
@@ -44,6 +70,7 @@ public class RestauranteUsuarioResponsavelController {
 		return ResponseEntity.noContent().build();
 	}
 
+	@CheckSecurity.Restaurantes.PodeGerenciarCadastro
 	@PutMapping("/{usuarioId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseEntity<Void> associar(@PathVariable Long restauranteId, @PathVariable Long usuarioId) {
